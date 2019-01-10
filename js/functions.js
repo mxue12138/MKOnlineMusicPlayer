@@ -110,7 +110,7 @@ $(function(){
             '</span>' +
             '<div class="list-menu" data-no="' + num + '">' +
                 '<span class="list-icon icon-play" data-function="play" title="点击播放这首歌"></span>' +
-                '<span class="list-icon icon-download" data-function="download" title="点击下载这首歌"></span>' +
+                '<span class="list-icon icon-download list-mobile-menu" title="点击下载这首歌"></span>' +
                 '<span class="list-icon icon-share" data-function="share" title="点击分享这首歌"></span>' +
             '</div>';
             target.html(html);
@@ -149,7 +149,7 @@ $(function(){
         var num = parseInt($(this).parent().data("no"));
         // 是用户列表，但是还没有加载数据
         if(musicList[num].item.length === 0 && musicList[num].creatorID) {
-            layer.msg('列表读取中...', {icon: 16,shade: 0.01,time: 500}); // 0代表加载的风格，支持0-2
+            layer.msg('列表读取中...', {icon: 16,shade: [0.75,'#000'],shadeClose: true,time: 500}); // 0代表加载的风格，支持0-2
             // ajax加载数据
             ajaxPlayList(musicList[num].id, num, loadList);
             return true;
@@ -164,10 +164,13 @@ $(function(){
             title: '请输入您的网易云 UID',
             // value: '',  // 默认值
             btn: ['确定', '取消', '帮助'],
+            shade: [0.75,'#000'],
+            shadeClose: true,
             btn3: function(index, layero){
                 layer.open({
                     title: '如何获取您的网易云UID？'
-                    ,shade: 0.6 //遮罩透明度
+                    ,shade: [0.75,'#000'] //遮罩透明度
+                    ,shadeClose: true
                     ,anim: 0 //0-6的动画形式，-1不开启
                     ,content: 
                     '1、首先<a href="http://music.163.com/" target="_blank">点我(http://music.163.com/)</a>打开网易云音乐官网<br>' +
@@ -273,9 +276,24 @@ $(function(){
         $(this).attr('src', 'images/player_cover.png');
     });
     
+    setInterval(function () {
+        $('.audio-time').text(getAudioTime());
+    }, 1000)
     // 初始化播放列表
     initList(); 
 });
+
+// 播放时长处理函数
+function getAudioTime () {
+    var audio = $('audio')[0];
+    var duration = audio.duration;
+    var currentTime = audio.currentTime;
+    if (duration) {
+        return (formatTime(duration) + '/' + formatTime(currentTime));
+    } else {
+        return '00:00/00:00';
+    }
+};
 
 // 展现系统列表中任意首歌的歌曲信息
 function musicInfo(list, index) {
@@ -290,11 +308,14 @@ function musicInfo(list, index) {
     
     tempStr += '<br><span class="info-title">操作：</span>' + 
     '<span class="info-btn" onclick="thisDownload(this)" data-list="' + list + '" data-index="' + index + '">下载</span>' + 
+    '<span style="margin-left: 10px" class="info-btn" onclick="downloadLrc(this)" data-list="' + list + '" data-index="' + index + '">下载歌词</span>' + 
+    '<span style="margin-left: 10px" class="info-btn" onclick="downloadPic(this)" data-list="' + list + '" data-index="' + index + '">下载封面</span>' + 
     '<span style="margin-left: 10px" class="info-btn" onclick="thisShare(this)" data-list="' + list + '" data-index="' + index + '">外链</span>';
     
     layer.open({
         type: 0,
-        shade: false,
+        shade: [0.75,'#000'],
+        shadeClose: true,
         title: false, //不显示标题
         btn: false,
         content: tempStr
@@ -332,9 +353,8 @@ function searchBox() {
     '</div></form>';
     layer.open({
         type: 1,
-        shade: false,
         title: false, // 不显示标题
-        shade: 0.5,    // 遮罩颜色深度
+        shade: [0.75,'#000'],    // 遮罩颜色深度
         shadeClose: true,
         content: tmpHtml,
         cancel: function(){
@@ -424,6 +444,8 @@ function ajaxShare(music) {
     
     layer.open({
         title: '歌曲外链分享'
+        ,shade: [0.75,'#000']
+        ,shadeClose: true
         ,content: tmpHtml
     });
 }
@@ -480,7 +502,7 @@ function changeCover(music) {
 // 向列表中载入某个播放列表
 function loadList(list) {
     if(musicList[list].isloading === true) {
-        layer.msg('列表读取中...', {icon: 16,shade: 0.01,time: 500});
+        layer.msg('列表读取中...', {icon: 16,shade: [0.75,'#000'],time: 500});
         return true;
     }
     

@@ -18,9 +18,9 @@
     <meta name="x5-fullscreen" content="true"><!--QQ强制全屏-->
     <meta name="x5-page-mode" content="app"><!--QQ应用模式-->
     
-    <title>MKOnlinePlayer v2.4</title>
-    <meta name="description" content="一款开源的基于网易云音乐api的在线音乐播放器。具有音乐搜索、播放、下载、歌词同步显示、个人音乐播放列表同步等功能。"/>
-    <meta name="keywords" content="孟坤播放器,在线音乐播放器,MKOnlinePlayer,网易云音乐,音乐api,音乐播放器源代码"/>
+    <title>MxuePlayer-茗血在线听歌房|收费歌曲在线下载|MKOnlinePlayer</title>
+    <meta name="description" content="MxuePlay是一个以H5 + JavaScript + php为基础开发的在线听歌房，原作者孟坤（MK），除了可以在线听歌，还可以免费下载各大音乐网站的收费歌曲，欢迎各位音乐爱好者前来体验。"/>
+    <meta name="keywords" content="MKOnlinePlayer,MxuePlay,在线听歌房,热门歌曲下载,茗血听歌房,网易云音乐免费下载,QQ音乐免费下载,酷狗音乐免费下载"/>
     
     <!-- 不支持IE8及以下版本浏览器 -->
     <!--[if lte IE 8]>
@@ -44,6 +44,22 @@
     
     <!-- layer弹窗插件样式文件 -->
     <link rel="stylesheet" href="plugns/layer/skin/default/layer.css?v=3.0.2302" id="layuicss-skinlayercss">
+
+    <!-- layer弹窗自定义样式 -->
+    <style>
+        #layer_box {
+            display: none;
+        }
+        .layui-layer-content {
+            padding: 0 15px;
+        }
+        .layui-layer-content > li {
+            padding: 4px 0;
+            line-height: 1.5;
+            font-size: 13px;
+            list-style: decimal;
+        }
+    </style>
 </head>
 <body>
 
@@ -52,7 +68,7 @@
 <!-- 头部logo -->
 <div class="header">
     <div class="logo" title="Version 2.4; Based on Meting; Powered by Mengkun">
-        ♫ MKOnlinePlayer
+        ♫ MxuePlayer
     </div>
 </div>  <!--class="header"-->
 
@@ -146,10 +162,34 @@
 <script src="js/background-blur.min.js"></script>
 
 <!-- 站长统计代码 -->
-<span style="display: none">
-    <!-- 各类统计代码都放在这里…… -->
-    
-</span>
+<script type="text/javascript">
+    $(function () {
+        (function () {
+            var cnzz_s_tag = document.createElement('script');
+            cnzz_s_tag.type = 'text/javascript';
+            cnzz_s_tag.async = true;
+            cnzz_s_tag.charset = 'utf-8';
+            cnzz_s_tag.src = 'https://w.cnzz.com/c.php?id=1273282175&async=1';
+            var root_s = document.getElementsByTagName('script')[0];
+            root_s.parentNode.insertBefore(cnzz_s_tag, root_s);
+        })();
+        layer.open({
+            btn: ['我知道了'],
+            title: '公告',
+            shadeClose: 'true',
+            maxWidth: 320,
+            content: $('#layer_box').html()
+        });
+    });
+</script>
 
 </body>
+
+<ul id="layer_box">
+    <li>由于本站歌曲和封面图片较多，所以第一次加载会比较慢，耐心稍等一会就行。</li>
+    <li>PC端可使用快捷键控制，Ctrl+左方向键=上一首、Ctrl+右方向键=下一首、空格键=播放/暂停。</li>
+    <li>移动端（手机、平板用户）请双击播放，第一次点击是加载，第二点击是播放，为防止误操作。</li>
+    <li>有事可以联系站长QQ&nbsp;<a href="https://wpa.qq.com/msgrd?v=3&uin=2578096874&site=qq&menu=yes" target="_blank" style="color: #72ACE3">2578096874</a>，不经常在线，有事请留言。</li>
+</ul>
+
 </html>

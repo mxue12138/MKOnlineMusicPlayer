@@ -221,10 +221,5 @@ function echojson($data)    //json和jsonp通用
         $data = str_replace('http://', 'https://', $data);
     }
     
-    if($callback) //输出jsonp格式
-    {
-        die(htmlspecialchars($callback).'('.$data.')');
-    } else {
-        die($data);
-    }
+    die($data);
 }

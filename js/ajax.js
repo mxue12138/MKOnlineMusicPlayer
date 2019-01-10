@@ -20,7 +20,7 @@ function ajaxSearch() {
         type: mkPlayer.method, 
         url: mkPlayer.api, 
         data: "types=search&count=" + mkPlayer.loadcount + "&source=" + rem.source + "&pages=" + rem.loadPage + "&name=" + rem.wd,
-        dataType : "jsonp",
+        dataType : "json",
         complete: function(XMLHttpRequest, textStatus) {
             if(tmpLoading) layer.close(tmpLoading);    // 关闭加载中动画
         },  // complete
@@ -113,7 +113,7 @@ function ajaxUrl(music, callback)
         type: mkPlayer.method, 
         url: mkPlayer.api,
         data: "types=url&id=" + music.id + "&source=" + music.source,
-        dataType : "jsonp",
+        dataType : "json",
         success: function(jsonData){
             // 调试信息输出
             if(mkPlayer.debug) {
@@ -172,7 +172,7 @@ function ajaxPic(music, callback)
         type: mkPlayer.method, 
         url: mkPlayer.api,
         data: "types=pic&id=" + music.pic_id + "&source=" + music.source,
-        dataType : "jsonp",
+        dataType : "json",
         success: function(jsonData){
             // 调试信息输出
             if(mkPlayer.debug) {
@@ -198,6 +198,73 @@ function ajaxPic(music, callback)
     
 }
 
+// 下载封面
+function downloadPic (obj) {
+    var music = musicList[$(obj).data("list")].item[$(obj).data("index")];
+    if (music.pic) {
+        open(music.pic.split('?')[0]);
+    } else {
+        $.ajax({ 
+            type: mkPlayer.method, 
+            url: mkPlayer.api,
+            data: "types=pic&id=" + music.pic_id + "&source=" + music.source,
+            dataType : "json",
+            success: function(jsonData){
+                if(mkPlayer.debug) {
+                    console.log("歌曲封面：" + jsonData.url);
+                }
+                if (jsonData.url) {
+                    open(jsonData.url.split('?')[0]);
+                } else {
+                    layer.msg('没有封面');
+                }
+            },
+            error: function(XMLHttpRequest, textStatus, errorThrown) {
+                layer.msg('歌曲封面获取失败 - ' + XMLHttpRequest.status);
+                console.error(XMLHttpRequest + textStatus + errorThrown);
+            }
+        });
+    }
+}
+
+// 下载歌词
+function downloadLrc (obj) {
+    var music = musicList[$(obj).data("list")].item[$(obj).data("index")];
+    if(!music.lyric_id) {
+        layer.msg('内部错误，参数有误');
+        return;
+    }
+    $.ajax({
+        type: mkPlayer.method,
+        url: mkPlayer.api,
+        data: "types=lyric&id=" + music.lyric_id + "&source=" + music.source,
+        dataType : "json",
+        success: function(jsonData){
+            layer.closeAll();
+            if (mkPlayer.debug) {
+                console.debug("歌词获取成功");
+            }
+            if (jsonData.lyric) {
+                var artist = music.artist ? ' - ' + music.artist : '';
+                var filename = (music.name + artist + '.lrc').replace('/', '&');
+                var element = document.createElement('a');
+                element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(jsonData.lyric));
+                element.setAttribute('download', filename);
+                element.style.display = 'none';
+                document.body.appendChild(element);
+                element.click();
+                document.body.removeChild(element);
+            } else {
+                layer.msg('没有歌词');
+            }
+        },
+        error: function(XMLHttpRequest, textStatus, errorThrown) {
+            layer.msg('歌词读取失败 - ' + XMLHttpRequest.status);
+            console.error(XMLHttpRequest + textStatus + errorThrown);
+        }
+    });
+}
+
 // ajax加载用户歌单
 // 参数：歌单网易云 id, 歌单存储 id，回调函数
 function ajaxPlayList(lid, id, callback) {
@@ -214,7 +281,7 @@ function ajaxPlayList(lid, id, callback) {
         type: mkPlayer.method, 
         url: mkPlayer.api, 
         data: "types=playlist&id=" + lid,
-        dataType : "jsonp",
+        dataType : "json",
         complete: function(XMLHttpRequest, textStatus) {
             musicList[id].isloading = false;    // 列表已经加载完了
         },  // complete
@@ -305,7 +372,7 @@ function ajaxLyric(music, callback) {
         type: mkPlayer.method,
         url: mkPlayer.api,
         data: "types=lyric&id=" + music.lyric_id + "&source=" + music.source,
-        dataType : "jsonp",
+        dataType : "json",
         success: function(jsonData){
             // 调试信息输出
             if (mkPlayer.debug) {
@@ -336,7 +403,7 @@ function ajaxUserList(uid)
         type: mkPlayer.method,
         url: mkPlayer.api,
         data: "types=userlist&uid=" + uid,
-        dataType : "jsonp",
+        dataType : "json",
         complete: function(XMLHttpRequest, textStatus) {
             if(tmpLoading) layer.close(tmpLoading);    // 关闭加载中动画
         },  // complete
