@@ -48,7 +48,7 @@ class Download {
 			return false;
 		} elseif ($data) {
 			curl_close($curl);
-			$file = fopen(iconv('UTF-8', 'GBK', $destination), 'w+');
+			$file = fopen($destination, 'w+');
 			fputs($file, $data);
 			fclose($file);
 			return true;
