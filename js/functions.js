@@ -401,6 +401,49 @@ function download(music) {
         layer.msg('这首歌不支持下载');
         return;
     }
+    if(music.url == 'err' || music.url == "" || music.url == null) {
+        layer.msg('这首歌不支持下载');
+        return;
+    }
+    var loadMsg = layer.msg('正在请求远程服务器，如果10秒后没有开始下载请重试', {
+        time: 10000
+    });
+    var load = layer.load(0, {
+        shade: [0.75,'#000'],
+    });
+    var loading = setTimeout(function () {
+        layer.close(load);
+        layer.close(loadMsg);
+        layer.msg('下载请求歌曲链接失败，请检查网络或稍后再试');
+    }, 10000)
+    $.ajax({ 
+        type: 'POST',
+        url: './download.php',
+        data: 'artist=' + music.artist + '&name=' + music.name + '&source=' + music.source + '&url=' + encodeURIComponent(music.url),
+        timeout: 10000,
+        success: function(data){
+            layer.closeAll();
+            clearInterval(loading);
+            if (data.code == 1) {
+                if ($('.download').length == 0) {
+                    var downDom = $('<iframe class="download" style="height: 0;width: 0;display: none;"></iframe>');
+                    downDom[0].src = data.data.url;
+                    $('body').append(downDom);
+                } else {
+                    var downDom = $('.download');
+                    downDom[0].src = data.data.url;
+                }
+            } else {
+                layer.msg(data.msg);
+            }
+        },
+        error: function (err) {
+            clearInterval(loading);
+            layer.closeAll();
+            layer.msg('下载失败，服务器错误');
+        }
+    });
+    return;
     openDownloadDialog(music.url, music.name + ' - ' + music.artist);
 }
 
