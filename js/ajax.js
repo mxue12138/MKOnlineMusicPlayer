@@ -13,7 +13,7 @@ function ajaxSearch() {
     }
     
     if(rem.loadPage == 1) { // 弹出搜索提示
-        var tmpLoading = layer.msg('搜索中', {icon: 16,shade: 0.01});
+        var tmpLoading = layer.msg('搜索中', {icon: 16,shade: [0.75,'#000']});
     }
     
     $.ajax({

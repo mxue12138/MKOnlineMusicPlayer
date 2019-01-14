@@ -70,9 +70,10 @@ class Download {
 		$artist = $this->getParam('artist') ? ' - '.$this->getParam('artist') : '';
 		$source = $this->getParam('source');
 
-		$extension = '.'.pathinfo(parse_url($url)['path'])['extension'];
+		// $extension = '.'.pathinfo(parse_url($url)['path'])['extension'];
 		$filename = $this->getParam('name');
-		$filepath = './temp/'.$source.'/'.$filename.$artist.$extension;
+		// $filepath = './temp/'.$source.'/'.$filename.$artist.'$extension';
+		$filepath = './temp/'.$source.'/'.$filename.$artist.'.mp3';
 		$downpath = $filepath;
 
 		if (file_exists($filepath)) {
