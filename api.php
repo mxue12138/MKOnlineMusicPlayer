@@ -70,7 +70,22 @@ switch($types)   // 根据请求的 Api，执行相应操作
     case 'pic':   // 获取歌曲链接
         $id = getParam('id');  // 歌曲ID
         
-        $data = $API->pic($id);
+        if(defined('CACHE_PATH')) {
+            $cache = CACHE_PATH.$source.'_'.$types.'_'.$id.'.json';
+            
+            if(file_exists($cache)) {   // 缓存存在，则读取缓存
+                $data = file_get_contents($cache);
+            } else {
+                $data = $API->pic($id);
+                
+                // 只缓存链接获取成功的歌曲
+                if(json_decode($data)->pic !== '') {
+                    file_put_contents($cache, $data);
+                }
+            }
+        } else {
+            $data = $API->pic($id);
+        }
         
         echojson($data);
         break;
@@ -78,7 +93,7 @@ switch($types)   // 根据请求的 Api，执行相应操作
     case 'lyric':       // 获取歌词
         $id = getParam('id');  // 歌曲ID
         
-        if(($source == 'netease') && defined('CACHE_PATH')) {
+        if(defined('CACHE_PATH')) {
             $cache = CACHE_PATH.$source.'_'.$types.'_'.$id.'.json';
             
             if(file_exists($cache)) {   // 缓存存在，则读取缓存
@@ -98,18 +113,22 @@ switch($types)   // 根据请求的 Api，执行相应操作
         echojson($data);
         break;
         
-    case 'download':    // 下载歌曲(弃用)
-        $fileurl = getParam('url');  // 链接
-        
-        header('location:$fileurl');
-        exit();
-        break;
-    
     case 'userlist':    // 获取用户歌单列表
         $uid = getParam('uid');  // 用户ID
         
-        $url= 'http://music.163.com/api/user/playlist/?offset=0&limit=1001&uid='.$uid;
-        $data = file_get_contents($url);
+        if(defined('CACHE_PATH')) {
+            $cache = CACHE_PATH.$source.'_'.$types.'_'.$id.'.json';
+            
+            if(file_exists($cache)) {   // 缓存存在，则读取缓存
+                $data = file_get_contents($cache);
+            } else {
+                $url= 'http://music.163.com/api/user/playlist/?offset=0&limit=1001&uid='.$uid;
+                $data = file_get_contents($url);
+            }
+        } else {
+            $url= 'http://music.163.com/api/user/playlist/?offset=0&limit=1001&uid='.$uid;
+            $data = file_get_contents($url);
+        }
         
         echojson($data);
         break;
@@ -117,7 +136,7 @@ switch($types)   // 根据请求的 Api，执行相应操作
     case 'playlist':    // 获取歌单中的歌曲
         $id = getParam('id');  // 歌单ID
         
-        if(($source == 'netease') && defined('CACHE_PATH')) {
+        if(defined('CACHE_PATH')) {
             $cache = CACHE_PATH.$source.'_'.$types.'_'.$id.'.json';
             
             if(file_exists($cache) && (date("Ymd", filemtime($cache)) == date("Ymd"))) {   // 缓存存在，则读取缓存
@@ -214,7 +233,6 @@ function getParam($key, $default='')
 function echojson($data)    //json和jsonp通用
 {
     header('Content-type: application/json');
-    $callback = getParam('callback');
     
     if(defined('HTTPS') && HTTPS === true && !defined('NO_HTTPS')) {    // 替换链接为 https
         $data = str_replace('http:\/\/', 'https:\/\/', $data);
