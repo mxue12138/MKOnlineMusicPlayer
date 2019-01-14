@@ -12,7 +12,7 @@ class Download {
 		die(json_encode($data));
 	}
 
-	public function resStatus ($downpath) {
+	public function resStatus ($downpath = null) {
 		if ($downpath) {
 			$this->resJson(array(
 				'code' => 1,
@@ -83,7 +83,7 @@ class Download {
 			if ($curl_status) {
 				$this->resStatus($downpath);
 			} else {
-				$this->resStatus(null);
+				$this->resStatus();
 			}
 		}
 	}
