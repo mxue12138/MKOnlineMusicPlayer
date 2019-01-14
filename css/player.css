@@ -743,6 +743,18 @@ body {
     cursor: pointer;
     height: 100%;
 }
+#music-progress {
+    margin-right: 100px;
+}
+.audio-time {
+    position: absolute;
+    right: 0;
+    top: 0;
+    font-size: 14px;
+    width: 90px;
+    text-align: center;
+    color: rgba(225,225,225,.8);
+}
 /* 进度条有背景区域 */
 .mkpgb-bar {
     position: absolute;
