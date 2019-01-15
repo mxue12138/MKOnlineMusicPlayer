@@ -33,17 +33,17 @@
     <!-- jQuery文件 -->
     <script src="js/jquery.min.js"></script>
     
+    <!-- layui样式文件 -->
+    <link rel="stylesheet" href="plugns/layui/css/layui.css">
+    
+    <!-- 滚动条美化样式文件 -->
+    <link rel="stylesheet" type="text/css" href="css/jquery.mCustomScrollbar.min.css">
+
     <!-- 播放器样式表文件 -->
     <link rel="stylesheet" type="text/css" href="css/player.css">
     
     <!-- 小屏幕样式修复 -->
     <link rel="stylesheet" type="text/css" href="css/small.css">
-    
-    <!-- 滚动条美化样式文件 -->
-    <link rel="stylesheet" type="text/css" href="css/jquery.mCustomScrollbar.min.css">
-    
-    <!-- layui样式文件 -->
-    <link rel="stylesheet" href="plugns/layui/css/layui.css">
 </head>
 <body>
 
@@ -125,10 +125,31 @@
 <!-- layui插件 -->
 <script src="plugns/layui/layui.js"></script>
 
+<!-- 播放器数据加载模块 -->
+<script src="js/ajax.js"></script>
+
+<!-- 播放器歌词解析模块 -->
+<script src="js/lyric.js"></script>
+
+<!-- 音乐列表配置 -->
+<script src="js/musicList.js"></script>
+
+<!-- 封装函数及ui交互模块 -->
+<script src="js/functions.js"></script>
+
+<!-- 播放器主体功能模块 -->
+<script src="js/player.js"></script>
+
+<!-- 滚动条美化插件 -->
+<script src="js/jquery.mCustomScrollbar.concat.min.js"></script>
+
+<!-- 背景模糊化插件 -->
+<script src="js/background-blur.min.js"></script>
+
 <!-- 初始化layui -->
 <script>
     var layer;
-    layui.use(['layer', 'form'], function(){
+    layui.use('layer', function(){
         layer = layui.layer;
         layer.open({
             btn: ['我知道了'],
@@ -151,39 +172,17 @@
     });
 </script>
 
-<!-- 播放器数据加载模块 -->
-<script src="js/ajax.js"></script>
-
-<!-- 播放器歌词解析模块 -->
-<script src="js/lyric.js"></script>
-
-<!-- 音乐列表配置 -->
-<script src="js/musicList.js"></script>
-
-<!-- 封装函数及ui交互模块 -->
-<script src="js/functions.js"></script>
-
-<!-- 播放器主体功能模块 -->
-<script src="js/player.js"></script>
-
-<!-- 滚动条美化插件 -->
-<script src="js/jquery.mCustomScrollbar.concat.min.js"></script>
-
-<!-- 背景模糊化插件 -->
-<script src="js/background-blur.min.js"></script>
-
 </body>
 
-<div id="layer-placard-box">
+<script type="text/html" id="layer-placard-box">
     <ul id="layer-placard-content">
         <li>由于本站歌曲和封面图片较多，所以第一次加载会比较慢，耐心稍等一会就行。</li>
         <li>PC端可使用快捷键控制，Ctrl+左方向键=上一首、Ctrl+右方向键=下一首、空格键=播放/暂停。</li>
         <li>移动端（手机、平板用户）请双击播放，第一次点击是加载，第二点击是播放，为防止误操作。</li>
         <li>有事可以联系站长QQ&nbsp;<a href="https://wpa.qq.com/msgrd?v=3&uin=2578096874&site=qq&menu=yes" target="_blank" style="color: #72ACE3">2578096874</a>，不经常在线，有事请留言。</li>
     </ul>
-</div>
-
-<div id="layer-from-box">
+</script>
+<script type="text/html" id="layer-from-box">
     <div id="layer-from-content">
         <form class="layui-form" onSubmit="return searchSubmit()" action="" id="search-area">
             <div class="search-input">
@@ -199,6 +198,6 @@
             </div>
         </form>
     </div>
-</div>
+</script>
 
 </html>
