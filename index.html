@@ -149,8 +149,10 @@
 <!-- 初始化layui -->
 <script>
     var layer;
-    layui.use('layer', function(){
+    var form;
+    layui.use(['layer', 'form'], function(){
         layer = layui.layer;
+        form = layui.form;
         layer.open({
             btn: ['我知道了'],
             title: '公告',
@@ -182,14 +184,14 @@
         <li>有事可以联系站长QQ&nbsp;<a href="https://wpa.qq.com/msgrd?v=3&uin=2578096874&site=qq&menu=yes" target="_blank" style="color: #72ACE3">2578096874</a>，不经常在线，有事请留言。</li>
     </ul>
 </script>
-<script type="text/html" id="layer-from-box">
-    <div id="layer-from-content">
+<script type="text/html" id="layer-form-box">
+    <div id="layer-form-content">
         <form class="layui-form" onSubmit="return searchSubmit()" action="" id="search-area">
             <div class="search-input">
                 <input type="text" name="wd" id="search-wd" required  lay-verify="required" placeholder="搜索歌手、歌名、专辑" autocomplete="off" class="layui-input">
                 <button class="layui-btn" lay-submit type="submit">搜 索</button>
             </div>
-            <div class="source-radio">
+            <div class="source-radio" id="music-source">
                 <label><input type="radio" name="source" value="netease" checked title="网易云"></label>
                 <label><input type="radio" name="source" value="tencent" title="QQ"></label>
                 <label><input type="radio" name="source" value="xiami" title="虾米"></label>

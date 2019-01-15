@@ -345,13 +345,15 @@ function searchBox() {
         shadeClose: true,
         offset: 'auto',
         area: '320px',
-        content: $('#layer-from-box').html(),
+        success: function(){
+            // 恢复上一次的输入
+            $("#search-wd").focus().val(rem.wd);
+            $("#music-source input[name='source'][value='" + rem.source + "']").prop("checked", "checked");
+            form.render();
+        },
+        content: $('#layer-form-box').html(),
         cancel: function(){}
     });
-    
-    // 恢复上一次的输入
-    $("#search-wd").focus().val(rem.wd);
-    $("#music-source input[name='source'][value='" + rem.source + "']").prop("checked", "checked");
 }
 
 // 搜索提交

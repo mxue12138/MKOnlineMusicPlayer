@@ -817,7 +817,7 @@ body {
 @keyframes dot-move{0%{-webkit-box-shadow: 0 0 10px #363333;}25%{-webkit-box-shadow: 0 0 7px #363333;}50%{-webkit-box-shadow: 0 0 0px #fff;}75%{-webkit-box-shadow: 0 0 6px #fff;}100%{-webkit-box-shadow: 0 0 10px #363333;}}
 
 /* 弹窗效果样式 */
-#layer-placard-box, #layer-from-box {
+#layer-placard-box, #layer-form-box {
     display: none;
 }
 #layer-placard-content {
@@ -829,22 +829,22 @@ body {
     font-size: 13px;
     list-style: decimal;
 }
-#layer-from-content .search-input {
+#layer-form-content .search-input {
     margin-bottom: 10px;
     position: relative;
 }
-#layer-from-content .search-input .layui-btn {
+#layer-form-content .search-input .layui-btn {
     position: absolute;
     top: 0;
     right: 0;
 }
-#layer-from-content .source-radio {
+#layer-form-content .source-radio {
     display: flex;
     justify-content: space-around;
 }
-#layer-from-content .source-radio .layui-icon {
+#layer-form-content .source-radio .layui-icon {
     margin-right: 4px;
 }
-#layer-from-content .source-radio .layui-form-radio {
+#layer-form-content .source-radio .layui-form-radio {
     margin: 0;
 }
