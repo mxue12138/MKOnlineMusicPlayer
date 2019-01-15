@@ -17,50 +17,54 @@ MKOnlineMusicPlayer 是一款开源的基于 `Meting` 的在线音乐播放器�
 
 ### 相关链接
 -----
-**在线演示** [http://lab.mkblog.cn/music/](http://lab.mkblog.cn/music/)
+**在线演示** [http://lab.mkblog.cn/music/](http://lab.mkblog.cn/music/)(原版已失效) , [https://music.itmxue.cn](https://music.itmxue.cn)(本人升级优化版)
 
 **详细介绍** [http://mkblog.cn/1060/](http://mkblog.cn/1060/)
 
-**GitHub** [https://github.com/mengkunsoft/MKOnlineMusicPlayer](https://github.com/mengkunsoft/MKOnlineMusicPlayer)
+**GitHub** [https://github.com/mengkunsoft/MKOnlineMusicPlayer](https://github.com/mengkunsoft/MKOnlineMusicPlayer)(原版已停止更新) , [https://github.com/mxue12138/MKOnlineMusicPlayer](https://github.com/mxue12138/MKOnlineMusicPlayer)(本人升级优化版)
 
 ### 注意事项
 -----
 #### 运行环境
 php 5.4+, curl_exec, file_get_contents, json_decode, openssl_encrypt
 
+#### 必要配置
+
+请务必添加以下代码到cron定时任务，并设置成每分钟执行一次，否则会导致用户歌单、歌曲列表、歌词等更新不及时，宝塔用户可以直接设置“计划任务”并选择“Shell脚本”
+
+``find 你的网站绝对路径/cache/*.json -type f -cmin +30 -exec rm -fv {} \;``
+
 #### 兼容性
 本播放器设计支持 IE9及以上的现代浏览器。并且已在 Chrome、firefox、IE11 等浏览器测试使用正常。
 
 #### 版权
-本播放器由 [mengkun(https://mkblog.cn)](https://mkblog.cn) 开发，您可以随意修改、使用、转载。使用或转载时`请务必保留出处`，抱拳了各位老铁们！
+本播放器由 [mengkun(https://mkblog.cn)](https://mkblog.cn) 开发（2.42版本及以后由本人修改），您可以随意修改、使用、转载。
 
 #### 歌曲
 播放器中的歌曲来自各大音乐平台，歌曲版权归各大平台享有。请支持正版音乐。
 
-#### 其它
-作者很忙，非诚勿扰。欢迎提交 BUG 及好的建议，不欢迎一上来就问一些基础的东西及唠东唠西。
-`如果要提交问题，请务必告知您的网址，否则无法处理`
-
 ### 常见问题
 -----
-[请前往 wiki 查阅](https://github.com/mengkunsoft/MKOnlineMusicPlayer/wiki)
-`遇到问题请详细阅读以上 wiki，已经进行解答的问题将不再回复！`
+[请前往原作者 wiki 查阅](https://github.com/mengkunsoft/MKOnlineMusicPlayer/wiki)
 
 ### 开发计划
 -----
 - 歌曲音质切换功能
 - IOS 歌曲播放问题
 - 美化歌曲搜索框
-
-### 打赏
------
-- 解决上面这些问题，需要花费很多时间与精力。支持项目继续完善下去，你也可以贡献一份力量！
-- 有了打赏，也就会有更新的动力 : )
-
-   ![](https://ws3.sinaimg.cn/large/006srDtYly1ffqy973ijwj30hk05atam.jpg)
+- 各大网站评论获取
+- 多用户管理系统
 
 ### 更新日志
 -----
+#### v2.42 `2019/1/13`
+- 添加歌曲播放进度
+- 删除无效的百度音乐
+- 添加歌词下载、封面下载等
+- 添加缓存用户歌单机制
+- 升级 Meting.php
+- 优化缓存机制，添加定时任务
+
 #### v2.41 `2018/3/13`
 - 修复 IE 下播放键错位的 BUG
 - 修改默认背景为黑色
@@ -204,18 +208,3 @@ php 5.4+, curl_exec, file_get_contents, json_decode, openssl_encrypt
 - **Let's Kill IE6**：消灭IE [http://overtrue.me](http://overtrue.me)
 
 ##### 在开发过程中，还参照了很多开源 html 播放器的相关代码，在此一并向他们表示感谢！
-
-### 耻辱柱
------
-恭喜下列个人或单位永久入驻耻辱柱！
-
-#### 素材火 [http://www.sucaihuo.com/]
-原因：以积分的形式变相售卖本作品(http://www.sucaihuo.com/php/3378.html ) 截图：https://t.cn/RFsgAAw
-
-#### 绿岛资源站 [http://www.ldzy.cc/]
-原因：未经允许，发布到淘宝售卖(https://item.taobao.com/item.htm?id=560064138441 ) 截图：https://t.cn/RlNRmi5
-
-#### 68喜论坛 [http://www.68xi.com/]
-原因：未经允许，删改版权信息(http://music.68xi.com/ )，并发布到淘宝售卖(https://item.taobao.com/item.htm?id=547226809330 )
-
-`奉劝某些“人”保留住做人的最基本底线，遵守开源协议，并引以为戒`
