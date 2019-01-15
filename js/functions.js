@@ -338,27 +338,15 @@ function musicInfo(list, index) {
 
 // 展现搜索弹窗
 function searchBox() {
-    var tmpHtml = '<form onSubmit="return searchSubmit()"><div id="search-area">' + 
-    '    <div class="search-group">' + 
-    '        <input type="text" name="wd" id="search-wd" placeholder="搜索歌手、歌名、专辑" autofocus required>' + 
-    '        <button class="search-submit" type="submit">搜 索</button>' + 
-    '    </div>' + 
-    '    <div class="radio-group" id="music-source">' + 
-    '       <label><input type="radio" name="source" value="netease" checked=""> 网易云</label>' + 
-    '       <label><input type="radio" name="source" value="tencent"> QQ</label>' + 
-    '       <label><input type="radio" name="source" value="xiami"> 虾米</label>' + 
-    '       <label><input type="radio" name="source" value="kugou"> 酷狗</label>' + 
-    // '       <label><input type="radio" name="source" value="baidu"> 百度</label>' + 
-    '   </div>' + 
-    '</div></form>';
     layer.open({
         type: 1,
         title: false, // 不显示标题
         shade: [0.75,'#000'],    // 遮罩颜色深度
         shadeClose: true,
-        content: tmpHtml,
-        cancel: function(){
-        }
+        offset: 'auto',
+        area: '320px',
+        content: $('#layer-from-box').html(),
+        cancel: function(){}
     });
     
     // 恢复上一次的输入
@@ -368,7 +356,7 @@ function searchBox() {
 
 // 搜索提交
 function searchSubmit() {
-    var wd = $("#search-wd").val();
+    var wd = $(".layui-layer #search-wd").val();
     if(!wd) {
         layer.msg('搜索内容不能为空', {anim:6, offset: 't'});
         $("#search-wd").focus();
