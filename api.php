@@ -70,22 +70,7 @@ switch($types)   // 根据请求的 Api，执行相应操作
     case 'pic':   // 获取歌曲链接
         $id = getParam('id');  // 歌曲ID
         
-        if(defined('CACHE_PATH')) {
-            $cache = CACHE_PATH.$source.'_'.$types.'_'.$id.'.json';
-            
-            if(file_exists($cache)) {   // 缓存存在，则读取缓存
-                $data = file_get_contents($cache);
-            } else {
-                $data = $API->pic($id);
-                
-                // 只缓存链接获取成功的歌曲
-                if(json_decode($data)->pic !== '') {
-                    file_put_contents($cache, $data);
-                }
-            }
-        } else {
-            $data = $API->pic($id);
-        }
+        $data = $API->pic($id);
         
         echojson($data);
         break;
@@ -117,13 +102,18 @@ switch($types)   // 根据请求的 Api，执行相应操作
         $uid = getParam('uid');  // 用户ID
         
         if(defined('CACHE_PATH')) {
-            $cache = CACHE_PATH.$source.'_'.$types.'_'.$id.'.json';
+            $cache = CACHE_PATH.$source.'_'.$types.'_'.$uid.'.json';
             
             if(file_exists($cache)) {   // 缓存存在，则读取缓存
                 $data = file_get_contents($cache);
             } else {
                 $url= 'http://music.163.com/api/user/playlist/?offset=0&limit=1001&uid='.$uid;
                 $data = file_get_contents($url);
+
+                // 只缓存链接获取成功的用户列表
+                if(isset($data) && !empty(json_decode($data)->playlist)) {
+                    file_put_contents($cache, $data);
+                }
             }
         } else {
             $url= 'http://music.163.com/api/user/playlist/?offset=0&limit=1001&uid='.$uid;
@@ -139,7 +129,7 @@ switch($types)   // 根据请求的 Api，执行相应操作
         if(defined('CACHE_PATH')) {
             $cache = CACHE_PATH.$source.'_'.$types.'_'.$id.'.json';
             
-            if(file_exists($cache) && (date("Ymd", filemtime($cache)) == date("Ymd"))) {   // 缓存存在，则读取缓存
+            if(file_exists($cache)) {   // 缓存存在，则读取缓存
                 $data = file_get_contents($cache);
             } else {
                 $data = $API->format(false)->playlist($id);
