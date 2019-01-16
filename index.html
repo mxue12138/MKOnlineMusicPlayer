@@ -44,6 +44,19 @@
     
     <!-- 小屏幕样式修复 -->
     <link rel="stylesheet" type="text/css" href="css/small.css">
+    
+    <!-- 自定义css样式 -->
+    <style>
+        #layer-placard-content {
+            padding: 0 15px;
+        }
+        #layer-placard-content > li {
+            padding: 4px 0;
+            line-height: 1.5;
+            font-size: 13px;
+            list-style: decimal;
+        }
+    </style>
 </head>
 <body>
 
@@ -146,21 +159,8 @@
 <!-- 背景模糊化插件 -->
 <script src="js/background-blur.min.js"></script>
 
-<!-- 初始化layui -->
+<!-- 自定义js -->
 <script>
-    var layer;
-    var form;
-    layui.use(['layer', 'form'], function(){
-        layer = layui.layer;
-        form = layui.form;
-        layer.open({
-            btn: ['我知道了'],
-            title: '公告',
-            shadeClose: 'true',
-            maxWidth: 320,
-            content: $('#layer-placard-box').html()
-        });
-    });
     $(function () {
         (function () {
             var cnzz_s_tag = document.createElement('script');
@@ -174,16 +174,7 @@
     });
 </script>
 
-</body>
-
-<script type="text/html" id="layer-placard-box">
-    <ul id="layer-placard-content">
-        <li>由于本站歌曲和封面图片较多，所以第一次加载会比较慢，耐心稍等一会就行。</li>
-        <li>PC端可使用快捷键控制，Ctrl+左方向键=上一首、Ctrl+右方向键=下一首、空格键=播放/暂停。</li>
-        <li>移动端（手机、平板用户）请双击播放，第一次点击是加载，第二点击是播放，为防止误操作。</li>
-        <li>有事可以联系站长QQ&nbsp;<a href="https://wpa.qq.com/msgrd?v=3&uin=2578096874&site=qq&menu=yes" target="_blank" style="color: #72ACE3">2578096874</a>，不经常在线，有事请留言。</li>
-    </ul>
-</script>
+<!-- 搜索弹窗 -->
 <script type="text/html" id="layer-form-box">
     <div id="layer-form-content">
         <form class="layui-form" onSubmit="return searchSubmit()" action="" id="search-area">
@@ -201,5 +192,17 @@
         </form>
     </div>
 </script>
+
+<!-- 公告html -->
+<script type="text/html" id="layer-placard-box">
+    <ul id="layer-placard-content">
+        <li>由于本站歌曲和封面图片较多，所以第一次加载会比较慢，耐心稍等一会就行。</li>
+        <li>PC端可使用快捷键控制，Ctrl+左方向键=上一首、Ctrl+右方向键=下一首、空格键=播放/暂停。</li>
+        <li>移动端（手机、平板用户）请双击播放，第一次点击是加载，第二点击是播放，为防止误操作。</li>
+        <li>有事可以联系站长QQ&nbsp;<a href="https://wpa.qq.com/msgrd?v=3&uin=2578096874&site=qq&menu=yes" target="_blank" style="color: #72ACE3">2578096874</a>，不经常在线，有事请留言。</li>
+    </ul>
+</script>
+
+</body>
 
 </html>

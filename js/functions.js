@@ -23,6 +23,23 @@ var isMobile = {
     }
 };
 
+// 初始化layui
+var layer;
+var form;
+layui.use(['layer', 'form'], function(){
+    layer = layui.layer;
+    form = layui.form;
+    if (mkPlayer.placard) {
+        layer.open({
+            btn: ['我知道了'],
+            title: '公告',
+            shadeClose: 'true',
+            maxWidth: 320,
+            content: $('#layer-placard-box').html()
+        });
+    }
+});
+
 $(function(){
     if(mkPlayer.debug) {
         console.warn('播放器调试模式已开启，正常使用时请在 js/player.js 中按说明关闭调试模式');

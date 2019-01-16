@@ -816,19 +816,7 @@ body {
 @-webkit-keyframes dot-move{0%{-webkit-box-shadow: 0 0 20px #fff;}25%{-webkit-box-shadow: 0 0 10px #fff;}50%{-webkit-box-shadow: 0 0 0px #fff;}75%{-webkit-box-shadow: 0 0 10px #fff;}100%{-webkit-box-shadow: 0 0 20px #fff;}}
 @keyframes dot-move{0%{-webkit-box-shadow: 0 0 10px #363333;}25%{-webkit-box-shadow: 0 0 7px #363333;}50%{-webkit-box-shadow: 0 0 0px #fff;}75%{-webkit-box-shadow: 0 0 6px #fff;}100%{-webkit-box-shadow: 0 0 10px #363333;}}
 
-/* 弹窗效果样式 */
-#layer-placard-box, #layer-form-box {
-    display: none;
-}
-#layer-placard-content {
-    padding: 0 15px;
-}
-#layer-placard-content > li {
-    padding: 4px 0;
-    line-height: 1.5;
-    font-size: 13px;
-    list-style: decimal;
-}
+/* 搜索弹窗效果样式 */
 #layer-form-content .search-input {
     margin-bottom: 10px;
     position: relative;
