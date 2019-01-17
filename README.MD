@@ -30,15 +30,36 @@ php 5.4+, curl_exec, file_get_contents, json_decode, openssl_encrypt
 
 #### 必要配置
 
-请务必添加以下代码到cron定时任务，并设置成每分钟执行一次，否则会导致用户歌单、歌曲列表、歌词等更新不及时，宝塔用户可以直接设置“计划任务”并选择“Shell脚本”
+1. 请务必添加以下代码到cron定时任务，并设置成每分钟执行一次，否则会导致用户歌单、歌曲列表、歌词等更新不及时，宝塔用户可以直接设置“计划任务”并选择“Shell脚本”
 
-``find 你的网站绝对路径/cache/*.json -type f -cmin +30 -exec rm -fv {} \;``
+   ``find 你的网站绝对路径/cache/*.json -type f -cmin +30 -exec rm -fv {} \;``
+
+2. 添加以下代码到你的网站配置文件
+
+   nginx：
+
+   ```
+   location ~/temp/ {
+       add_header Content-Type "application/octet-stream";
+       add_header Content-Disposition "attachment;";
+   }
+   ```
+
+3. 如果是使用的分布式歌曲下载服务器，请将上面的代码添加到下载服务器，并且还需要在下载服务器的网站配置添加以下代码以解决跨域问题
+
+   nginx：
+
+   ```
+   add_header Access-Control-Allow-Origin *;
+   add_header Access-Control-Allow-Headers X-Requested-With;
+   add_header Access-Control-Allow-Methods GET,POST,OPTIONS;
+   ```
 
 #### 兼容性
 本播放器设计支持 IE9及以上的现代浏览器。并且已在 Chrome、firefox、IE11 等浏览器测试使用正常。
 
 #### 版权
-本播放器由 [mengkun(https://mkblog.cn)](https://mkblog.cn) 开发（2.42版本及以后由本人修改），您可以随意修改、使用、转载。
+本播放器由 [mengkun(https://mkblog.cn)](https://mkblog.cn) 开发，2.42版本及以后由本人修改优化，您可以随意修改、使用、转载。
 
 #### 歌曲
 播放器中的歌曲来自各大音乐平台，歌曲版权归各大平台享有。请支持正版音乐。
@@ -51,12 +72,14 @@ php 5.4+, curl_exec, file_get_contents, json_decode, openssl_encrypt
 -----
 - 歌曲音质切换功能
 - IOS 歌曲播放问题
-- 美化歌曲搜索框
 - 各大网站评论获取
 - 多用户管理系统
 
 ### 更新日志
 -----
+#### v2.43 `2019/1/15`
+- 美化歌曲搜索框
+
 #### v2.42 `2019/1/13`
 - 添加歌曲播放进度
 - 删除无效的百度音乐

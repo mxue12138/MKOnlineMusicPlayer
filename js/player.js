@@ -468,7 +468,7 @@ document.onkeydown = function showkey(e) {
     var key = e.keyCode || e.which || e.charCode;
     var ctrl = e.ctrlKey || e.metaKey;
     var isFocus = $('input').is(":focus");  
-    if (ctrl && key == 37) playList(rem.playid - 1);    // Ctrl+左方向键 切换上一首歌
-    if (ctrl && key == 39) playList(rem.playid + 1);    // Ctrl+右方向键 切换下一首歌
-    if (key == 32 && isFocus == false) pause();         // 空格键 播放/暂停歌曲
+    if (ctrl && key == 37 && !isFocus) playList(rem.playid - 1);    // Ctrl+左方向键 切换上一首歌
+    if (ctrl && key == 39 && !isFocus) playList(rem.playid + 1);    // Ctrl+右方向键 切换下一首歌
+    if (key == 32 && !isFocus) pause();         // 空格键 播放/暂停歌曲
 }

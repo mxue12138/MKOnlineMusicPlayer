@@ -408,10 +408,6 @@ function download(music) {
         layer.msg('这首歌不支持下载');
         return;
     }
-    if(music.url == 'err' || music.url == "" || music.url == null) {
-        layer.msg('这首歌不支持下载');
-        return;
-    }
     var loadMsg = layer.msg('正在请求远程服务器，如果10秒后没有开始下载请重试', {
         time: 10000
     });
