@@ -66,13 +66,12 @@ function main () {
 	$url = urldecode(getParam('url'));
 	$artist = getParam('artist') ? ' - '.getParam('artist') : '';
 	$source = getParam('source');
-
-	// $extension = '.'.pathinfo(parse_url($url)['path'])['extension'];
 	$filename = getParam('name');
-	// $filepath = './temp/'.$source.'/'.$filename.$artist.'$extension';
-	$filepath = './temp/'.$source.'/'.$filename.$artist.'.mp3';
-	$downpath = $filepath;
 
+	$protocol = stripos($_SERVER['SERVER_PROTOCOL'],'https') === true ? 'https://' : 'http://';
+	$filepath = './temp/'.$source.'/'.$filename.$artist.'.mp3';
+	$downpath = $protocol.$_SERVER['HTTP_HOST'].'/temp/'.$source.'/'.$filename.$artist.'.mp3';
+	
 	if (file_exists($filepath)) {
 		resStatus($downpath);
 	} else {
