@@ -68,7 +68,7 @@ function main () {
 	$source = getParam('source');
 	$filename = getParam('name');
 
-	$protocol = stripos($_SERVER['SERVER_PROTOCOL'],'https') === true ? 'https://' : 'http://';
+	$protocol = $http_type = ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') || (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https')) ? 'https://' : 'http://'; 
 	$filepath = './temp/'.$source.'/'.$filename.$artist.'.mp3';
 	$downpath = $protocol.$_SERVER['HTTP_HOST'].'/temp/'.$source.'/'.$filename.$artist.'.mp3';
 	
