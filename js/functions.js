@@ -361,7 +361,7 @@ function searchBox() {
         shade: [0.75,'#000'],    // 遮罩颜色深度
         shadeClose: true,
         offset: 'auto',
-        area: '320px',
+        area: '360px',
         success: function(){
             // 恢复上一次的输入
             $("#search-wd").focus().val(rem.wd);
