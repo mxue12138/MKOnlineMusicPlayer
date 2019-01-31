@@ -305,7 +305,7 @@ function getAudioTime () {
     var audio = $('audio')[0];
     var duration = audio.duration;
     var currentTime = audio.currentTime;
-    if (duration) {
+    if (duration && currentTime) {
         return (formatTime(duration) + '/' + formatTime(currentTime));
     } else {
         return '00:00/00:00';
@@ -325,7 +325,7 @@ function musicInfo(list, index) {
     
     tempStr += '<br><span class="info-title">操作：</span>' + 
     '<span class="info-btn" onclick="thisDownload(this)" data-list="' + list + '" data-index="' + index + '">下载</span>' + 
-    '<span style="margin-left: 10px" class="info-btn" onclick="downloadLrc(this)" data-list="' + list + '" data-index="' + index + '">下载歌词</span>' + 
+    '<span style="margin-left: 10px" class="info-btn" onclick="thisDownloadLrc(this)" data-list="' + list + '" data-index="' + index + '">下载歌词</span>' + 
     '<span style="margin-left: 10px" class="info-btn" onclick="downloadPic(this)" data-list="' + list + '" data-index="' + index + '">下载封面</span>' + 
     '<span style="margin-left: 10px" class="info-btn" onclick="thisShare(this)" data-list="' + list + '" data-index="' + index + '">外链</span>';
     
@@ -396,6 +396,63 @@ function thisDownload(obj) {
     ajaxUrl(musicList[$(obj).data("list")].item[$(obj).data("index")], download);
 }
 
+
+// 下载封面
+function downloadPic (obj) {
+    var music = musicList[$(obj).data("list")].item[$(obj).data("index")];
+    if (music.pic) {
+        open(music.pic.split('?')[0]);
+    } else {
+        $.ajax({ 
+            type: mkPlayer.method, 
+            url: mkPlayer.api,
+            data: "types=pic&id=" + music.pic_id + "&source=" + music.source,
+            dataType : "json",
+            success: function(jsonData){
+                if(mkPlayer.debug) {
+                    console.log("歌曲封面：" + jsonData.url);
+                }
+                if (jsonData.url) {
+                    open(jsonData.url.split('?')[0]);
+                } else {
+                    layer.msg('没有封面');
+                }
+            },
+            error: function(XMLHttpRequest, textStatus, errorThrown) {
+                layer.msg('歌曲封面获取失败 - ' + XMLHttpRequest.status);
+                console.error(XMLHttpRequest + textStatus + errorThrown);
+            }
+        });
+    }
+}
+
+// 下载歌词
+function thisDownloadLrc (obj) {
+    var music;
+    ajaxUrl(musicList[$(obj).data("list")].item[$(obj).data("index")], function (obj) {
+        music = obj;
+    });
+    ajaxLyric(musicList[$(obj).data("list")].item[$(obj).data("index")], function (obj) {
+        music.lyric = obj;
+        if (mkPlayer.debug) {
+            console.debug("歌词获取成功");
+        }
+        if (music.lyric) {
+            var artist = music.artist ? ' - ' + music.artist : '';
+            var filename = (music.name + artist + '.lrc').replace('/', '&');
+            var element = document.createElement('a');
+            element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(music.lyric));
+            element.setAttribute('download', filename);
+            element.style.display = 'none';
+            document.body.appendChild(element);
+            element.click();
+            document.body.removeChild(element);
+        } else {
+            layer.msg('歌词获取失败');
+        }
+    });
+}
+
 // 分享正在播放的这首歌
 function thisShare(obj) {
     ajaxUrl(musicList[$(obj).data("list")].item[$(obj).data("index")], ajaxShare);
@@ -447,8 +504,6 @@ function download(music) {
             layer.msg('下载失败，服务器错误');
         }
     });
-    return;
-    openDownloadDialog(music.url, music.name + ' - ' + music.artist);
 }
 
 /**

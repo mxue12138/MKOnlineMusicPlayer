@@ -198,73 +198,6 @@ function ajaxPic(music, callback)
     
 }
 
-// 下载封面
-function downloadPic (obj) {
-    var music = musicList[$(obj).data("list")].item[$(obj).data("index")];
-    if (music.pic) {
-        open(music.pic.split('?')[0]);
-    } else {
-        $.ajax({ 
-            type: mkPlayer.method, 
-            url: mkPlayer.api,
-            data: "types=pic&id=" + music.pic_id + "&source=" + music.source,
-            dataType : "json",
-            success: function(jsonData){
-                if(mkPlayer.debug) {
-                    console.log("歌曲封面：" + jsonData.url);
-                }
-                if (jsonData.url) {
-                    open(jsonData.url.split('?')[0]);
-                } else {
-                    layer.msg('没有封面');
-                }
-            },
-            error: function(XMLHttpRequest, textStatus, errorThrown) {
-                layer.msg('歌曲封面获取失败 - ' + XMLHttpRequest.status);
-                console.error(XMLHttpRequest + textStatus + errorThrown);
-            }
-        });
-    }
-}
-
-// 下载歌词
-function downloadLrc (obj) {
-    var music = musicList[$(obj).data("list")].item[$(obj).data("index")];
-    if(!music.lyric_id) {
-        layer.msg('内部错误，参数有误');
-        return;
-    }
-    $.ajax({
-        type: mkPlayer.method,
-        url: mkPlayer.api,
-        data: "types=lyric&id=" + music.lyric_id + "&source=" + music.source,
-        dataType : "json",
-        success: function(jsonData){
-            layer.closeAll();
-            if (mkPlayer.debug) {
-                console.debug("歌词获取成功");
-            }
-            if (jsonData.lyric) {
-                var artist = music.artist ? ' - ' + music.artist : '';
-                var filename = (music.name + artist + '.lrc').replace('/', '&');
-                var element = document.createElement('a');
-                element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(jsonData.lyric));
-                element.setAttribute('download', filename);
-                element.style.display = 'none';
-                document.body.appendChild(element);
-                element.click();
-                document.body.removeChild(element);
-            } else {
-                layer.msg('没有歌词');
-            }
-        },
-        error: function(XMLHttpRequest, textStatus, errorThrown) {
-            layer.msg('歌词读取失败 - ' + XMLHttpRequest.status);
-            console.error(XMLHttpRequest + textStatus + errorThrown);
-        }
-    });
-}
-
 // ajax加载用户歌单
 // 参数：歌单网易云 id, 歌单存储 id，回调函数
 function ajaxPlayList(lid, id, callback) {
@@ -398,7 +331,7 @@ function ajaxLyric(music, callback) {
 // 参数 用户的网易云 id
 function ajaxUserList(uid)
 {
-    var tmpLoading = layer.msg('加载中...', {icon: 16,shade: 0.01});
+    var tmpLoading = layer.msg('加载中...', {icon: 16,shade: [0.75,'#000']});
     $.ajax({
         type: mkPlayer.method,
         url: mkPlayer.api,
@@ -409,13 +342,13 @@ function ajaxUserList(uid)
         },  // complete
         success: function(jsonData){
             if(jsonData.code == "-1" || jsonData.code == 400){
-                layer.msg('用户 uid 输入有误');
+                layer.msg('用户 uid 输入有误', {anim:6});
                 return false;
             }
             
             if(jsonData.playlist.length === 0 || typeof(jsonData.playlist.length) === "undefined")
             {
-                layer.msg('没找到用户 ' + uid + ' 的歌单');
+                layer.msg('没找到用户 ' + uid + ' 的歌单', {anim:6});
                 return false;
             }else{
                 var tempList,userList = [];
