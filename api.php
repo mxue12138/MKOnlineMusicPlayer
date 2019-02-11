@@ -24,6 +24,7 @@ $netease_cookie = '';
 
 define('HTTPS', false);    // 如果您的网站启用了https，请将此项置为“true”，如果你的网站未启用 https，建议将此项设置为“false”
 define('DEBUG', false);      // 是否开启调试模式，正常使用时请将此项置为“false”
+define('JSONP', true);      // 是否开启JSONP模式，使用远程api时请开启
 define('CACHE_PATH', 'cache/');     // 文件缓存目录,请确保该目录存在且有读写权限。如无需缓存，可将此行注释掉
 
 /*
@@ -39,8 +40,10 @@ define('CACHE_PATH', 'cache/');     // 文件缓存目录,请确保该目录存�
 if(!defined('DEBUG') || DEBUG !== true) error_reporting(0); // 屏蔽服务器错误
 
 require_once('plugns/Meting.php');
+require_once('plugns/Download.php');
 
 use Metowolf\Meting;
+use Mxue\Download;
 
 $source = getParam('source', 'netease');  // 歌曲源
 $API = new Meting($source);
@@ -98,6 +101,19 @@ switch($types)   // 根据请求的 Api，执行相应操作
         echojson($data);
         break;
         
+    case 'download':    // 下载歌曲
+        $url = getParam('url');
+        $name = getParam('name');
+        $source = getParam('source');
+        $artist = getParam('artist');
+
+        $service = new Download();
+
+        $data = $service->download($url, $name, $source, $artist);
+
+        echojson($data);
+        break;
+    
     case 'userlist':    // 获取用户歌单列表
         $uid = getParam('uid');  // 用户ID
         
@@ -229,5 +245,10 @@ function echojson($data)    //json和jsonp通用
         $data = str_replace('http://', 'https://', $data);
     }
     
-    die($data);
+    if(defined('JSONP') && JSONP === true && $callback) //输出jsonp格式
+    {
+        die(htmlspecialchars($callback).'('.$data.')');
+    } else {
+        die($data);
+    }
 }
