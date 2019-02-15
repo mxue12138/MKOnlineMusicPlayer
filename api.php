@@ -47,6 +47,7 @@ use Mxue\Download;
 
 $source = getParam('source', 'netease');  // 歌曲源
 $API = new Meting($source);
+$DOWNLOAD = new Download($source);
 
 $API->format(true); // 启用格式化功能
 
@@ -73,7 +74,22 @@ switch($types)   // 根据请求的 Api，执行相应操作
     case 'pic':   // 获取歌曲链接
         $id = getParam('id');  // 歌曲ID
         
-        $data = $API->pic($id);
+        if(defined('CACHE_PATH')) {
+            $cache = CACHE_PATH.$source.'_'.$types.'_'.$id.'.json';
+            
+            if(file_exists($cache)) {   // 缓存存在，则读取缓存
+                $data = file_get_contents($cache);
+            } else {
+                $data = $API->pic($id);
+                
+                // 只缓存链接获取成功的歌曲
+                if(json_decode($data)->url !== '') {
+                    file_put_contents($cache, $data);
+                }
+            }
+        } else {
+            $data = $API->pic($id);
+        }
         
         echojson($data);
         break;
@@ -104,12 +120,24 @@ switch($types)   // 根据请求的 Api，执行相应操作
     case 'download':    // 下载歌曲
         $url = getParam('url');
         $name = getParam('name');
-        $source = getParam('source');
         $artist = getParam('artist');
 
-        $service = new Download();
-
-        $data = $service->download($url, $name, $source, $artist);
+        if(defined('CACHE_PATH')) {
+            $cache = CACHE_PATH.$source.'_'.$types.'_'.md5($name).'_'.$artist.'.json';
+            
+            if(file_exists($cache)) {   // 缓存存在，则读取缓存
+                $data = file_get_contents($cache);
+            } else {
+                $data = $DOWNLOAD->download($url, $name, $artist);
+                
+                // 只缓存链接获取成功的歌曲
+                if(isset($data) && json_decode($data)->code == 1) {
+                    file_put_contents($cache, $data);
+                }
+            }
+        } else {
+            $data = $DOWNLOAD->download($url, $name, $artist);
+        }
 
         echojson($data);
         break;
@@ -167,14 +195,63 @@ switch($types)   // 根据请求的 Api，执行相应操作
         $limit = getParam('count', 20);  // 每页显示数量
         $pages = getParam('pages', 1);  // 页码
         
-        $data = $API->search($s, [
-            'page' => $pages, 
-            'limit' => $limit
-        ]);
+        if(defined('CACHE_PATH')) {
+            $cache = CACHE_PATH.$source.'_'.$types.'_'.md5($s).'_'.$pages.'_'.$limit.'.json';
+
+            if(file_exists($cache)) {   // 缓存存在，则读取缓存
+                $data = file_get_contents($cache);
+            } else {
+                $data = $API->search($s, [
+                    'page' => $pages, 
+                    'limit' => $limit
+                ]);
+
+                // 只缓存链接获取成功的歌曲
+                if(isset($data) && !empty(json_decode($data))) {
+                    file_put_contents($cache, $data);
+                }
+            }
+        } else {
+            $data = $API->search($s, [
+                'page' => $pages, 
+                'limit' => $limit
+            ]);
+        }
         
         echojson($data);
         break;
+    
+    case 'comments':  // 获取评论
+        $id = getParam('id');  // 歌曲id
+        $limit = getParam('count', 20);  // 每页显示数量
+        $pages = getParam('pages', 1);  // 页码
         
+        if(defined('CACHE_PATH')) {
+            $cache = CACHE_PATH.$source.'_'.$types.'_'.$id.'_'.$pages.'_'.$limit.'.json';
+
+            if(file_exists($cache)) {   // 缓存存在，则读取缓存
+                $data = file_get_contents($cache);
+            } else {
+                $data = $API->comments($id, [
+                    'page' => $pages, 
+                    'limit' => $limit
+                ]);
+
+                // 只缓存链接获取成功的歌曲
+                if(isset($data) && !empty(json_decode($data))) {
+                    file_put_contents($cache, $data);
+                }
+            }
+        } else {
+            $data = $API->comments($id, [
+                'page'  => $pages,
+                'limit' => $limit
+            ]);
+        }
+
+        echojson($data);
+        break;
+
     default:
         echo '<!doctype html><html><head><meta charset="utf-8"><title>信息</title><style>* {font-family: microsoft yahei}</style></head><body> <h2>MKOnlinePlayer</h2><h3>Github: https://github.com/mengkunsoft/MKOnlineMusicPlayer</h3><br>';
         if(!defined('DEBUG') || DEBUG !== true) {   // 非调试模式

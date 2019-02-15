@@ -4,6 +4,13 @@ namespace Mxue;
 
 class Download
 {
+    public $source;
+
+    public function __construct($source)
+    {
+        $this->source = $source;
+    }
+
     public function echojson ($downpath, $msg = '')
     {
         if ($downpath) {
@@ -47,24 +54,21 @@ class Download
         }
     }
 
-    public function download ($url, $name, $source, $artist)
+    public function download ($url, $name, $artist)
     {
         if (!$url) {
             return $this->echojson(null, '歌曲url有误');
         } else if (!$name) {
             return $this->echojson(null, '歌曲名称有误');
-        } else if (!$source) {
-            return $this->echojson(null, '歌曲类型有误');
         }
 
         $url = urldecode($url);
         $artist = $artist ? ' - '.$artist : '';
-        $source = $source;
-        $filename = $name;
+        $source = $this->source;
 
         $protocol = $http_type = ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') || (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https')) ? 'https://' : 'http://'; 
-        $filepath = dirname(dirname(__FILE__)).'/temp/'.$source.'/'.$filename.$artist.'.mp3';
-        $downpath = $protocol.$_SERVER['HTTP_HOST'].'/temp/'.$source.'/'.$filename.$artist.'.mp3';
+        $filepath = dirname(dirname(__FILE__)).'/temp/'.$source.'/'.$name.$artist.'.mp3';
+        $downpath = $protocol.$_SERVER['HTTP_HOST'].'/temp/'.$source.'/'.$name.$artist.'.mp3';
         
         if (file_exists($filepath)) {
             return $this->echojson($downpath);

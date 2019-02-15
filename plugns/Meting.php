@@ -85,7 +85,7 @@ class Meting
             $this->data = call_user_func_array(array($this, $api['decode']), array($this->data));
         }
         if (isset($api['format'])) {
-            $this->data = $this->clean($this->data, $api['format']);
+            $this->data = $this->clean($this->data, $api);
         }
 
         return $this->data;
@@ -143,13 +143,17 @@ class Meting
     private function clean($raw, $rule)
     {
         $raw = json_decode($raw, true);
-        if (!empty($rule)) {
-            $raw = $this->pickup($raw, $rule);
+        if (!empty($rule['format'])) {
+            $raw = $this->pickup($raw, $rule['format']);
         }
         if (!isset($raw[0]) && count($raw)) {
             $raw = array($raw);
         }
-        $result = array_map(array($this, 'format_'.$this->server), $raw);
+        if (isset($rule['api_type']) && isset($rule['api_type']) == 'comments') {
+            $result = array_map(array($this, 'comments_'.$this->server), $raw);
+        } else {
+            $result = array_map(array($this, 'format_'.$this->server), $raw);
+        }
 
         return json_encode($result);
     }
@@ -658,6 +662,28 @@ class Meting
         }
         $this->temp['br'] = $br;
 
+        return $this->exec($api);
+    }
+
+    public function comments($id, $option = null)
+    {
+        switch ($this->server) {
+            case 'netease':
+            $api = array(
+                'method'     => 'POST',
+                'url'        => 'http://music.163.com/weapi/v1/resource/comments/R_SO_4_'.$id,
+                'body'       => array(
+                    'rid'    => 'R_SO_4_'.$id,
+                    'offset' => isset($option['page']) && isset($option['limit']) ? ($option['page'] - 1) * $option['limit'] : 0,
+                    'total'  => 'true',
+                    'limit'  => isset($option['limit']) ? $option['limit'] : 30,
+                ),
+                'encode'     => 'netease_AESCBC',
+                'format'     => 'hotComments',
+            );
+            break;
+        }
+        $api['api_type'] = 'comments';
         return $this->exec($api);
     }
 
@@ -1172,6 +1198,22 @@ class Meting
         }
 
         return json_encode($url);
+    }
+    
+    private function comments_netease($data)
+    {
+        $result = array(
+            'id'         => $data['commentId'],
+            'user'       => array(
+                'name'   => $data['user']['nickname'],
+                'avatar' => $data['user']['avatarUrl'],
+            ),
+            'time'       => $data['time'],
+            'content'    => $data['content'],
+            'source'     => 'netease',
+        );
+
+        return $result;
     }
 
     private function netease_lyric($result)
