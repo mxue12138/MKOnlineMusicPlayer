@@ -428,7 +428,7 @@ function comments(obj) {
         data: "types=comments&id=" + obj.id + "&source=" + obj.source,
         dataType: mkPlayer.dataType,
         success: function(jsonData){
-            if (jsonData) {
+            if (!jsonData) {
                 rem.comments = [];
                 return;
             }
