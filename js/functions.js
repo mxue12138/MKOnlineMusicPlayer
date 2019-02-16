@@ -438,7 +438,13 @@ function comments(obj) {
             }
             var commentsIndex = 0;
             $(".banner_text span").text(rem.comments[0].content);
-            $(".banner_text a").attr("href", "https://music.163.com/#/song?id="+obj.id);
+            if (obj.source === 'netease') {
+                $(".banner_text a").attr("href", "https://music.163.com/#/song?id="+obj.id+"#comment-box");
+            } else if (obj.source === 'kugou') {
+                $(".banner_text a").attr("href", "https://www.kugou.com/song/#hash="+obj.id);
+            } else if (obj.source === 'tencent') {
+                $(".banner_text a").attr("href", "https://y.qq.com/n/yqq/song/"+obj.id+".html#comment_box");
+            }
             $(".banner_text img").show().attr("src", rem.comments[0].user.avatar ? rem.comments[0].user.avatar : "images/avatar.png");
             rem.commentsTime = setInterval(function () {
                 if (commentsIndex === rem.comments.length-1) {
