@@ -324,7 +324,7 @@ function play(music) {
     }
     
     try {
-        if (!rem.isMobile && mkPlayer.comments && music.source === "netease") {
+        if (!rem.isMobile && mkPlayer.comments) {
             comments(music);
         }
         rem.audio[0].pause();
@@ -345,7 +345,7 @@ function play(music) {
 
 // 我的要求并不高，保留这一句版权信息可好？
 // 保留了，你不会损失什么；而保留版权，是对作者最大的尊重。
-console.info('欢迎使用 MKOnlinePlayer!\n当前版本：'+mkPlayer.version+' \n作者：mengkun(https://mkblog.cn)\n歌曲来源于各大音乐平台\nGithub：https://github.com/mengkunsoft/MKOnlineMusicPlayer');
+// console.info('欢迎使用 MKOnlinePlayer!\n当前版本：'+mkPlayer.version+' \n作者：mengkun(https://mkblog.cn)\n歌曲来源于各大音乐平台\nGithub：https://github.com/mengkunsoft/MKOnlineMusicPlayer');
 
 // 音乐进度条拖动回调函数
 function mBcallback(newVal) {

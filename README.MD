@@ -21,12 +21,12 @@ MKOnlineMusicPlayer 是一款开源的基于 `Meting` 的在线音乐播放器�
 
 **详细介绍** [http://mkblog.cn/1060/](http://mkblog.cn/1060/)
 
-**GitHub** [https://github.com/mengkunsoft/MKOnlineMusicPlayer](https://github.com/mengkunsoft/MKOnlineMusicPlayer)(原版已停止更新) , [https://github.com/mxue12138/MKOnlineMusicPlayer](https://github.com/mxue12138/MKOnlineMusicPlayer)(本人升级优化版)
+**GitHub** [https://github.com/mengkunsoft/MKOnlineMusicPlayer](https://github.com/mengkunsoft/MKOnlineMusicPlayer)(原版已停止更新) , [https://github.com/mxue12138/MKOnlineMusicPlayer](https://github.com/mxue12138/MKOnlineMusicPlayer)、[https://gogs.itmxue.cn/mingxue/MKOnlineMusicPlayer](https://gogs.itmxue.cn/mingxue/MKOnlineMusicPlayer)(本人升级优化版)
 
 ### 注意事项
 -----
 #### 运行环境
-php 5.4+, curl_exec, file_get_contents, json_decode, openssl_encrypt
+nginx, php 5.4+, curl_exec, file_get_contents, json_decode, openssl_encrypt
 
 #### 必要配置
 
@@ -72,11 +72,17 @@ php 5.4+, curl_exec, file_get_contents, json_decode, openssl_encrypt
 -----
 - 歌曲音质切换功能
 - IOS 歌曲播放问题
-- 各大网站评论获取
+- 各大网站评论获取(已开始开发)
 - 多用户管理系统
 
 ### 更新日志
 -----
+#### v2.44 `2019/2/16`
+- 现已添加网易云、酷狗热评接口，后续添加其他渠道接口
+- 优化移动端判断代码
+- 优化IE兼容性
+- 优化后端缓存机制
+
 #### v2.43 `2019/1/15`
 - 美化歌曲搜索框
 

@@ -682,6 +682,50 @@ class Meting
                 'format'     => 'hotComments',
             );
             break;
+            case 'tencent':
+            $api = array(
+                'method'    => 'GET',
+                'url'       => 'http://www.baidu.com',
+                'body'      => array(
+                    'test'  => 'test',
+                ),
+                'format'    => 'list',
+            );
+            break;
+            case 'xiami':
+            $api = array(
+                'method'    => 'GET',
+                'url'       => 'http://www.baidu.com',
+                'body'      => array(
+                    'test'  => 'test',
+                ),
+                'format'    => 'list',
+            );
+            break;
+            case 'baidu':
+            $api = array(
+                'method'    => 'GET',
+                'url'       => 'http://www.baidu.com',
+                'body'      => array(
+                    'test'  => 'test',
+                ),
+                'format'    => 'list',
+            );
+            break;
+            case 'kugou':
+            $api = array(
+                'method'    => 'GET',
+                'url'       => 'http://m.comment.service.kugou.com/index.php',
+                'body'      => array(
+                    'r'         => 'commentsv2/getCommentWithLike',
+                    'code'      => 'fc4be23b4e972707f36b8a828a93ba8a',
+                    'extdata'   => $id,
+                    'pagesize'  => isset($option['limit']) ? $option['limit'] : 30,
+                    'p'         => isset($option['page']) ? $option['page'] : 0,
+                ),
+                'format'    => 'list',
+            );
+            break;
         }
         $api['api_type'] = 'comments';
         return $this->exec($api);
@@ -1205,12 +1249,30 @@ class Meting
         $result = array(
             'id'         => $data['commentId'],
             'user'       => array(
+                'id'     => $data['user']['userId'],
                 'name'   => $data['user']['nickname'],
                 'avatar' => $data['user']['avatarUrl'],
             ),
-            'time'       => $data['time'],
+            'time'       => date('Y-m-d H:i:s', $data['time']),
             'content'    => $data['content'],
             'source'     => 'netease',
+        );
+
+        return $result;
+    }
+
+    private function comments_kugou($data)
+    {
+        $result = array(
+            'id'         => $data['hash'],
+            'user'       => array(
+                'id'     => $data['user_id'],
+                'name'   => $data['user_name'],
+                'avatar' => $data['user_pic'],
+            ),
+            'time'       => $data['addtime'],
+            'content'    => $data['content'],
+            'source'     => 'kugou',
         );
 
         return $result;

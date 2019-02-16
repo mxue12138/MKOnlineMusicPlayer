@@ -418,17 +418,17 @@ function thisDownload(obj) {
 
 // 获取并设置评论
 function comments(obj) {
+    clearInterval(rem.commentsTime);
     $(".banner_text span").text("歌曲热评/评论");
     $(".banner_text a").attr("href", "javascript");
     $(".banner_text img").hide();
     $.ajax({
         type: mkPlayer.method, 
         url: mkPlayer.api, 
-        data: "types=comments&id=" + obj.id,
+        data: "types=comments&id=" + obj.id + "&source=" + obj.source,
         dataType: mkPlayer.dataType,
         success: function(jsonData){
-            clearInterval(rem.commentsTime);
-            if (jsonData.length === 0) {
+            if (jsonData) {
                 rem.comments = [];
                 return;
             }
