@@ -420,7 +420,7 @@ function thisDownload(obj) {
 function comments(obj) {
     clearInterval(rem.commentsTime);
     $(".banner_text span").text("歌曲热评/评论");
-    $(".banner_text a").attr("href", "javascript");
+    $(".banner_text a").attr("href", "javascript:;");
     $(".banner_text img").hide();
     $.ajax({
         type: mkPlayer.method, 
@@ -428,11 +428,14 @@ function comments(obj) {
         data: "types=comments&id=" + obj.id + "&source=" + obj.source,
         dataType: mkPlayer.dataType,
         success: function(jsonData){
-            if (!jsonData) {
+            if (jsonData.hot_comment && jsonData.hot_comment.length) {
+                rem.comments = jsonData.hot_comment;
+            } else if (jsonData.comment && jsonData.comment.length) {
+                rem.comments = jsonData.comment;
+            } else {
                 rem.comments = [];
                 return;
             }
-            rem.comments = jsonData;
             var commentsIndex = 0;
             $(".banner_text span").text(rem.comments[0].content);
             $(".banner_text a").attr("href", "https://music.163.com/#/song?id="+obj.id);

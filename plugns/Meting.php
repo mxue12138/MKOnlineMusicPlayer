@@ -143,15 +143,26 @@ class Meting
     private function clean($raw, $rule)
     {
         $raw = json_decode($raw, true);
-        if (!empty($rule['format'])) {
-            $raw = $this->pickup($raw, $rule['format']);
-        }
-        if (!isset($raw[0]) && count($raw)) {
-            $raw = array($raw);
-        }
         if (isset($rule['api_type']) && isset($rule['api_type']) == 'comments') {
-            $result = array_map(array($this, 'comments_'.$this->server), $raw);
+            $raw1 = $this->pickup($raw, $rule['format'][0]);
+            $raw2 = $this->pickup($raw, $rule['format'][1]);
+            if (!isset($raw1[0]) && count($raw1)) {
+                $raw1 = array($raw1);
+            }
+            if (!isset($raw2[0]) && count($raw2)) {
+                $raw2 = array($raw2);
+            }
+            $result = array(
+                'hot_comment' => array_map(array($this, 'comments_'.$this->server), $raw1),
+                'comment' => array_map(array($this, 'comments_'.$this->server), $raw2),
+            );
         } else {
+            if (!empty($rule['format'])) {
+                $raw = $this->pickup($raw, $rule['format']);
+            }
+            if (!isset($raw[0]) && count($raw)) {
+                $raw = array($raw);
+            }
             $result = array_map(array($this, 'format_'.$this->server), $raw);
         }
 
@@ -679,17 +690,29 @@ class Meting
                     'limit'  => isset($option['limit']) ? $option['limit'] : 30,
                 ),
                 'encode'     => 'netease_AESCBC',
-                'format'     => 'hotComments',
+                'format'     => array(
+                    'hotComments',
+                    'comments',
+                ),
             );
             break;
             case 'tencent':
+            preg_match('/data-id="(\d.*?)"/', $this->curl('https://y.qq.com/n/yqq/song/'.$id.'.html')->raw, $newId);
+            $newId = $newId[1];
             $api = array(
                 'method'    => 'GET',
-                'url'       => 'http://www.baidu.com',
+                'url'       => 'https://c.y.qq.com/base/fcgi-bin/fcg_global_comment_h5.fcg',
                 'body'      => array(
-                    'test'  => 'test',
+                    'biztype'   => 1,
+                    'topid'     => $newId,
+                    'cmd'       => 8,
+                    'pagenum'   => isset($option['page']) ? $option['page'] - 1 : 0,
+                    'pagesize'  => isset($option['limit']) ? $option['limit'] : 30,
                 ),
-                'format'    => 'list',
+                'format'    => array(
+                    'hot_comment.commentlist',
+                    'comment.commentlist',
+                ),
             );
             break;
             case 'xiami':
@@ -723,7 +746,10 @@ class Meting
                     'pagesize'  => isset($option['limit']) ? $option['limit'] : 30,
                     'p'         => isset($option['page']) ? $option['page'] : 0,
                 ),
-                'format'    => 'list',
+                'format'    => array(
+                    '',
+                    'list',
+                ),
             );
             break;
         }
@@ -1256,6 +1282,23 @@ class Meting
             'time'       => date('Y-m-d H:i:s', $data['time']),
             'content'    => $data['content'],
             'source'     => 'netease',
+        );
+
+        return $result;
+    }
+
+    private function comments_tencent($data)
+    {
+        $result = array(
+            'id'         => $data['commentid'],
+            'user'       => array(
+                'id'     => $data['uin'],
+                'name'   => $data['nick'],
+                'avatar' => $data['avatarurl'],
+            ),
+            'time'       => date('Y-m-d H:i:s', $data['time']),
+            'content'    => $data['rootcommentcontent'],
+            'source'     => 'tencent',
         );
 
         return $result;
