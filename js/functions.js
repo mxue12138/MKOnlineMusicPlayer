@@ -17,9 +17,12 @@ var isMobile = {
     },  
     Windows: function() {  
         return navigator.userAgent.match(/IEMobile/i) ? true : false;  
-    },  
+    }, 
+    Screen: function() {
+        return document.documentElement.clientWidth < 900 ? true : false;
+    }, 
     any: function() {
-        return (isMobile.Android() || isMobile.BlackBerry() || isMobile.iOS() || isMobile.Windows());  
+        return (isMobile.Android() || isMobile.BlackBerry() || isMobile.iOS() || isMobile.Windows() || isMobile.Screen());  
     }
 };
 
@@ -30,13 +33,15 @@ layui.use(['layer', 'form'], function(){
     layer = layui.layer;
     form = layui.form;
     if (mkPlayer.placard) {
-        layer.open({
-            btn: ['我知道了'],
-            title: '公告',
-            shadeClose: 'true',
-            maxWidth: 320,
-            content: $('#layer-placard-box').html()
-        });
+        window.onload = function () {
+            layer.open({
+                btn: ['我知道了'],
+                title: '公告',
+                shadeClose: 'true',
+                maxWidth: 320,
+                content: $('#layer-placard-box').html()
+            });
+        };
     }
 });
 
@@ -45,10 +50,18 @@ $(function(){
         console.warn('播放器调试模式已开启，正常使用时请在 js/player.js 中按说明关闭调试模式');
     }
     
-    rem.isMobile = isMobile.any();      // 判断是否是移动设备
-    rem.webTitle = document.title;      // 记录页面原本的标题
-    rem.errCount = 0;                   // 连续播放失败的歌曲数归零
+    rem.isMobile  = isMobile.any();      // 判断是否是移动设备
+    rem.webTitle  = document.title;      // 记录页面原本的标题
+    rem.errCount  = 0;                   // 连续播放失败的歌曲数归零
+    rem.userAgent = navigator.userAgent; // 获取用户userAgent
     
+    window.onresize = function () {
+        rem.isMobile = isMobile.any();
+        if (navigator.userAgent !== rem.userAgent) {
+            location.reload();
+        }
+    }
+
     initProgress();     // 初始化音量条、进度条（进度条初始化要在 Audio 前，别问我为什么……）
     initAudio();    // 初始化 audio 标签，事件绑定
     
