@@ -297,7 +297,14 @@ $(function(){
         $('.audio-time').text(getAudioTime());
     }, 1000)
     // 初始化播放列表
-    initList(); 
+    initList();
+
+    // 移动端不显示评论框
+    if (rem.isMobile) {
+        $('.banner_text').hide();
+    } else if (!mkPlayer.comments) {
+        $('.banner_text').hide();
+    }
 });
 
 // 播放时长处理函数
@@ -396,6 +403,43 @@ function thisDownload(obj) {
     ajaxUrl(musicList[$(obj).data("list")].item[$(obj).data("index")], download);
 }
 
+// 获取并设置评论
+function comments(obj) {
+    $(".banner_text span").text("歌曲热评/评论");
+    $(".banner_text a").attr("href", "javascript");
+    $(".banner_text img").hide();
+    $.ajax({
+        type: mkPlayer.method, 
+        url: mkPlayer.api, 
+        data: "types=comments&id=" + obj.id,
+        dataType: mkPlayer.dataType,
+        success: function(jsonData){
+            clearInterval(rem.commentsTime);
+            if (jsonData.length === 0) {
+                rem.comments = [];
+                return;
+            }
+            rem.comments = jsonData;
+            var commentsIndex = 0;
+            $(".banner_text span").text(rem.comments[0].content);
+            $(".banner_text a").attr("href", "https://music.163.com/#/song?id="+obj.id);
+            $(".banner_text img").show().attr("src", rem.comments[0].user.avatar ? rem.comments[0].user.avatar : "images/avatar.png");
+            rem.commentsTime = setInterval(function () {
+                if (commentsIndex === rem.comments.length-1) {
+                    commentsIndex = 0;
+                } else {
+                    commentsIndex++;
+                }
+                $(".banner_text span").text(rem.comments[commentsIndex].content);
+                $(".banner_text img").show().attr("src", rem.comments[commentsIndex].user.avatar ? rem.comments[commentsIndex].user.avatar : "images/avatar.png");
+            }, 5000)
+        },   //success
+        error: function(XMLHttpRequest, textStatus, errorThrown) {
+            layer.msg('歌曲评论获取失败 - ' + XMLHttpRequest.status);
+            console.error(XMLHttpRequest + textStatus + errorThrown);
+        }   // error
+    });//ajax
+}
 
 // 下载封面
 function downloadPic (obj) {
@@ -407,7 +451,7 @@ function downloadPic (obj) {
             type: mkPlayer.method, 
             url: mkPlayer.api,
             data: "types=pic&id=" + music.pic_id + "&source=" + music.source,
-            dataType : "json",
+            dataType: mkPlayer.dataType,
             success: function(jsonData){
                 if(mkPlayer.debug) {
                     console.log("歌曲封面：" + jsonData.url);

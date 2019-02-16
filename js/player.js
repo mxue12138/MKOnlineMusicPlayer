@@ -8,7 +8,9 @@
 var mkPlayer = {
     api: "api.php", // api地址
     loadcount: 20,  // 搜索结果一次加载多少条
+    comments: true, // 是否开启歌曲评论功能
     method: "POST",     // 数据传输方式(POST/GET)
+    dataType: "json",   // 服务器返回的数据格式(json/jsonp)
     defaultlist: 3,    // 默认要显示的播放列表编号
     autoplay: false,    // 是否自动播放(true/false) *此选项在移动端可能无效
     coverbg: true,      // 是否开启封面背景(true/false) *开启后会有些卡
@@ -322,6 +324,9 @@ function play(music) {
     }
     
     try {
+        if (!rem.isMobile && mkPlayer.comments && music.source === "netease") {
+            comments(music);
+        }
         rem.audio[0].pause();
         rem.audio.attr('src', music.url);
         rem.audio[0].play();
