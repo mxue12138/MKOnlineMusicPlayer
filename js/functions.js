@@ -156,9 +156,6 @@ $(function(){
             case "play":    // 播放
                 listClick(num);     // 调用列表点击处理函数
             break;
-            case "download":    // 下载
-                ajaxUrl(musicList[rem.dislist].item[num], download);
-            break;
             case "share":   // 分享
                 // ajax 请求数据
                 ajaxUrl(musicList[rem.dislist].item[num], ajaxShare);
@@ -346,7 +343,7 @@ function musicInfo(list, index) {
     tempStr += '<br><span class="info-title">操作：</span>' + 
     '<span class="info-btn" onclick="thisDownload(this)" data-list="' + list + '" data-index="' + index + '">下载</span>' + 
     '<span style="margin-left: 10px" class="info-btn" onclick="thisDownloadLrc(this)" data-list="' + list + '" data-index="' + index + '">下载歌词</span>' + 
-    '<span style="margin-left: 10px" class="info-btn" onclick="downloadPic(this)" data-list="' + list + '" data-index="' + index + '">下载封面</span>' + 
+    '<span style="margin-left: 10px" class="info-btn" onclick="thisDownloadPic(this)" data-list="' + list + '" data-index="' + index + '">下载封面</span>' + 
     '<span style="margin-left: 10px" class="info-btn" onclick="thisShare(this)" data-list="' + list + '" data-index="' + index + '">外链</span>';
     
     layer.open({
@@ -464,7 +461,7 @@ function comments(obj) {
 }
 
 // 下载封面
-function downloadPic (obj) {
+function thisDownloadPic (obj) {
     var music = musicList[$(obj).data("list")].item[$(obj).data("index")];
     if (music.pic) {
         open(music.pic.split('?')[0]);
@@ -494,29 +491,42 @@ function downloadPic (obj) {
 
 // 下载歌词
 function thisDownloadLrc (obj) {
-    var music;
-    ajaxUrl(musicList[$(obj).data("list")].item[$(obj).data("index")], function (obj) {
-        music = obj;
-    });
-    ajaxLyric(musicList[$(obj).data("list")].item[$(obj).data("index")], function (obj) {
-        music.lyric = obj;
-        if (mkPlayer.debug) {
-            console.debug("歌词获取成功");
-        }
-        if (music.lyric) {
-            var artist = music.artist ? ' - ' + music.artist : '';
-            var filename = (music.name + artist + '.lrc').replace('/', '&');
-            var element = document.createElement('a');
-            element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(music.lyric));
-            element.setAttribute('download', filename);
-            element.style.display = 'none';
-            document.body.appendChild(element);
-            element.click();
-            document.body.removeChild(element);
-        } else {
-            layer.msg('歌词获取失败');
-        }
-    });
+    var music = musicList[$(obj).data("list")].item[$(obj).data("index")];
+    $.ajax({
+        type: mkPlayer.method,
+        url: mkPlayer.api,
+        data: "types=lyric&id=" + music.lyric_id + "&source=" + music.source,
+        dataType: mkPlayer.dataType,
+        success: function(jsonData){
+            // 调试信息输出
+            if (mkPlayer.debug) {
+                console.debug("歌词获取成功");
+            }
+            
+            var lyric = obj;
+            if (mkPlayer.debug) {
+                console.debug("歌词获取成功");
+            }
+            if (lyric) {
+                var artist = music.artist ? ' - ' + music.artist : '';
+                var filename = (music.name + artist + '.lrc').replace('/', '&');
+                var element = document.createElement('a');
+                element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(lyric));
+                element.setAttribute('download', filename);
+                element.style.display = 'none';
+                document.body.appendChild(element);
+                element.click();
+                document.body.removeChild(element);
+            } else {
+                layer.msg('歌词获取失败');
+            }
+        },   //success
+        error: function(XMLHttpRequest, textStatus, errorThrown) {
+            layer.msg('歌词读取失败 - ' + XMLHttpRequest.status);
+            console.error(XMLHttpRequest + textStatus + errorThrown);
+            callback('', music.lyric_id);    // 回调函数
+        }   // error   
+    });//ajax
 }
 
 // 分享正在播放的这首歌

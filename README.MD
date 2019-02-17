@@ -36,6 +36,15 @@ nginx, php 5.4+, curl_exec, file_get_contents, json_decode, openssl_encrypt
 
 2. 添加以下代码到你的网站配置文件
 
+   apache：
+
+   ```
+   <Directory "/var/www/html/test">
+       Header set Content-Type "application/octet-stream"
+       Header set Content-Disposition "attachment;"
+   </Directory>
+   ```
+
    nginx：
 
    ```
@@ -46,6 +55,14 @@ nginx, php 5.4+, curl_exec, file_get_contents, json_decode, openssl_encrypt
    ```
 
 3. 如果是使用的分布式歌曲下载服务器，请将上面的代码添加到下载服务器，并且还需要在下载服务器的网站配置添加以下代码以解决跨域问题
+
+   apache：
+
+   ```
+   Header set Access-Control-Allow-Origin *
+   Header set Access-Control-Allow-Headers X-Requested-With
+   Header set Access-Control-Allow-Methods GET,POST,OPTIONS
+   ```
 
    nginx：
 
@@ -78,7 +95,7 @@ nginx, php 5.4+, curl_exec, file_get_contents, json_decode, openssl_encrypt
 ### 更新日志
 -----
 #### v2.44 `2019/2/16`
-- 现已添加网易云、酷狗热评接口，后续添加其他渠道接口
+- 现已添加网易云、酷狗、腾讯热评接口，后续添加其他渠道接口
 - 优化移动端判断代码
 - 优化IE兼容性
 - 优化后端缓存机制

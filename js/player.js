@@ -265,7 +265,10 @@ function playList(id) {
     
     // 记录正在播放的歌曲在正在播放列表中的 id
     rem.playid = id;
-    
+
+    // 强制将歌曲url清空，以防止歌曲url过期
+    musicList[1].item[id].url = "";
+
     // 如果链接为空，则 ajax 获取数据后再播放
     if(musicList[1].item[id].url === null || musicList[1].item[id].url === "") {
         ajaxUrl(musicList[1].item[id], play);

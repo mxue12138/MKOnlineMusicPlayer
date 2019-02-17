@@ -252,6 +252,44 @@ switch($types)   // 根据请求的 Api，执行相应操作
         echojson($data);
         break;
 
+    case 'cache':
+        $minute = getParam('minute', 30);   // 删除几分钟之前的文件
+
+        date_default_timezone_set('Asia/Shanghai'); // 如果时区不同请自行设置时区
+
+        $list = scandir(CACHE_PATH);
+        $jsonList = array();
+
+        foreach ($list as $val) {
+            $filePath = CACHE_PATH.$val;
+            if (is_file($filePath) && pathinfo($filePath, PATHINFO_EXTENSION) === 'json') {
+                array_push($jsonList, $filePath);
+            }
+        }
+
+        $data = array();
+        foreach($jsonList as $val) {
+            if (strtotime('+'.$minute.' minute', filemtime($val)) <= time()) {
+                $filetime = date('Y-m-d H:i:s', filemtime($val));
+                if (unlink($val)) {
+                    array_push($data, array(
+                        'msg' => '删除成功。',
+                        'time' => $filetime,
+                        'file' => $val,
+                    )); 
+                } else {
+                    array_push($data, array(
+                        'msg' => '删除失败，请检查文件权限或其他问题。',
+                        'time' => $filetime,
+                        'file' => $val,
+                    ));
+                }
+            }
+        }
+
+        echojson(json_encode($data));
+        break;
+
     default:
         echo '<!doctype html><html><head><meta charset="utf-8"><title>信息</title><style>* {font-family: microsoft yahei}</style></head><body> <h2>MKOnlinePlayer</h2><h3>Github: https://github.com/mengkunsoft/MKOnlineMusicPlayer</h3><br>';
         if(!defined('DEBUG') || DEBUG !== true) {   // 非调试模式
@@ -316,6 +354,7 @@ function getParam($key, $default='')
 function echojson($data)    //json和jsonp通用
 {
     header('Content-type: application/json');
+    $callback = getParam('callback');
     
     if(defined('HTTPS') && HTTPS === true && !defined('NO_HTTPS')) {    // 替换链接为 https
         $data = str_replace('http:\/\/', 'https:\/\/', $data);
