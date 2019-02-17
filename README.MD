@@ -8,11 +8,13 @@ MxuePlay是MKOnlineMusicPlayer的优化版，MKOnlineMusicPlayer 是一款开源
 
 ### 界面欣赏
 -----
-![主界面(电脑端)](https://user-images.githubusercontent.com/16880885/30487091-f7b45980-9a64-11e7-9588-8b6b87ac6763.jpg)
+![主界面(电脑端)](https://user-images.githubusercontent.com/35069089/52914931-e9655d00-3308-11e9-8347-a1f9be614e10.png)
 
-![播放列表界面(电脑端)](https://user-images.githubusercontent.com/16880885/30487141-1f8ad416-9a65-11e7-960c-a102c47a3d0e.jpg)
+![歌曲播放(电脑端)](https://user-images.githubusercontent.com/35069089/52914962-2f222580-3309-11e9-87ce-5feb50697d69.png)
 
-![歌曲搜索与播放](https://user-images.githubusercontent.com/16880885/30487344-c93a0306-9a65-11e7-92f3-552072b1dbce.jpg)
+![歌曲搜索(电脑端)](https://user-images.githubusercontent.com/35069089/52914970-42cd8c00-3309-11e9-9eb1-2cd3f6b7a242.png)
+
+![播放列表界面(电脑端)](https://user-images.githubusercontent.com/35069089/52914976-65f83b80-3309-11e9-97fc-b3409ccb2d09.png)
 
 
 ### 相关链接
