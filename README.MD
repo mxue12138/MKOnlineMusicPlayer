@@ -1,6 +1,6 @@
-MKOnlineMusicPlayer
+MxuePlay（原MKOnlineMusicPlayer）
 ========
-MKOnlineMusicPlayer 是一款开源的基于 `Meting` 的在线音乐播放器。具有音乐搜索、播放、下载、歌词同步显示、个人网易云音乐播放列表同步等功能。
+MxuePlay是MKOnlineMusicPlayer的优化版，MKOnlineMusicPlayer 是一款开源的基于 `Meting` 的在线音乐播放器。具有音乐搜索、播放、下载、歌词同步显示、个人网易云音乐播放列表同步等功能。
 
 前端界面参照 QQ 音乐网页版进行布局，同时采用了流行的响应式设计，无论是在PC端还是在手机端，均能给您带来原生 app 般的使用体验。
 
@@ -17,16 +17,16 @@ MKOnlineMusicPlayer 是一款开源的基于 `Meting` 的在线音乐播放器�
 
 ### 相关链接
 -----
-**在线演示** [http://lab.mkblog.cn/music/](http://lab.mkblog.cn/music/)(原版已失效) , [https://music.itmxue.cn](https://music.itmxue.cn)(本人升级优化版)
+**在线演示** [https://music.itmxue.cn](https://music.itmxue.cn)(本人升级优化版)
 
 **详细介绍** [http://mkblog.cn/1060/](http://mkblog.cn/1060/)
 
-**GitHub** [https://github.com/mengkunsoft/MKOnlineMusicPlayer](https://github.com/mengkunsoft/MKOnlineMusicPlayer)(原版已停止更新) , [https://github.com/mxue12138/MKOnlineMusicPlayer](https://github.com/mxue12138/MKOnlineMusicPlayer)、[https://gogs.itmxue.cn/mingxue/MKOnlineMusicPlayer](https://gogs.itmxue.cn/mingxue/MKOnlineMusicPlayer)(本人升级优化版)
+**GitHub** [https://github.com/mxue12138/MKOnlineMusicPlayer](https://github.com/mxue12138/MKOnlineMusicPlayer)、[https://gogs.itmxue.cn/mingxue/MKOnlineMusicPlayer](https://gogs.itmxue.cn/mingxue/MKOnlineMusicPlayer)(本人升级优化版)
 
 ### 注意事项
 -----
 #### 运行环境
-nginx, php 5.4+, curl_exec, file_get_contents, json_decode, openssl_encrypt
+php 5.4+, curl_exec, file_get_contents, json_decode, openssl_encrypt
 
 #### 必要配置
 
@@ -34,12 +34,14 @@ nginx, php 5.4+, curl_exec, file_get_contents, json_decode, openssl_encrypt
 
    ``find 你的网站绝对路径/cache/*.json -type f -cmin +30 -exec rm -fv {} \;``
 
-2. 添加以下代码到你的网站配置文件
+   如果是虚拟主机没办法添加Shell脚本的话，可以使用网站监控，监控“你的域名/api.php?types=cache”，监控时间推荐一分钟。
+
+2. 添加以下代码到你的网站配置文件，推荐添加到php引用之前，否则可能导致恶意php被执行
 
    apache：
 
    ```
-   <Directory "/var/www/html/test">
+   <Directory "你的网站绝对路径/cache/">
        Header set Content-Type "application/octet-stream"
        Header set Content-Disposition "attachment;"
    </Directory>
@@ -59,9 +61,9 @@ nginx, php 5.4+, curl_exec, file_get_contents, json_decode, openssl_encrypt
    apache：
 
    ```
-   Header set Access-Control-Allow-Origin *
-   Header set Access-Control-Allow-Headers X-Requested-With
-   Header set Access-Control-Allow-Methods GET,POST,OPTIONS
+   Header set Access-Control-Allow-Origin "*"
+   Header set Access-Control-Allow-Headers "X-Requested-With"
+   Header set Access-Control-Allow-Methods "GET,POST,OPTIONS"
    ```
 
    nginx：
@@ -248,7 +250,7 @@ nginx, php 5.4+, curl_exec, file_get_contents, json_decode, openssl_encrypt
 #### 采用的开源模块
 - **Jquery**：js主流开发框架 [http://jquery.com/](http://jquery.com/)
 - **Meting**：一个高效的多平台音乐 API 框架 [https://github.com/metowolf/Meting](https://github.com/metowolf/Meting)
-- **layer**：一款强大的web弹层组件 [http://layer.layui.com/](http://layer.layui.com/)
+- **layui**：一款模块化前端框架[https://www.layui.com/](https://www.layui.com/)
 - **mCustomScrollbar**：jQuery自定义滚动条样式插件 [http://manos.malihu.gr/jquery-custom-content-scroller/](http://manos.malihu.gr/jquery-custom-content-scroller/)
 - **background-blur**：跨浏览器磨砂效果背景图片模糊特效插件 [https://msurguy.github.io/background-blur/](https://msurguy.github.io/background-blur/)
 - **Let's Kill IE6**：消灭IE [http://overtrue.me](http://overtrue.me)
