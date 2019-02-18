@@ -34,10 +34,8 @@ define('CACHE_PATH', 'cache/');     // 文件缓存目录,请确保该目录存�
  因为调试模式下程序会输出服务器环境信息，为了您的服务器安全，正常使用时请务必关闭调试。
 */
 
-
-
 /*****************************************************************************************************/
-if(!defined('DEBUG') || DEBUG !== true) error_reporting(0); // 屏蔽服务器错误
+// if(!defined('DEBUG') || DEBUG !== true) error_reporting(0); // 屏蔽服务器错误
 
 require_once('plugns/Meting.php');
 require_once('plugns/Download.php');
@@ -71,7 +69,7 @@ switch($types)   // 根据请求的 Api，执行相应操作
         echojson($data);
         break;
         
-    case 'pic':   // 获取歌曲链接
+    case 'pic':   // 获取封面链接
         $id = getParam('id');  // 歌曲ID
         
         if(defined('CACHE_PATH')) {
@@ -83,7 +81,7 @@ switch($types)   // 根据请求的 Api，执行相应操作
                 $data = $API->pic($id);
                 
                 // 只缓存链接获取成功的歌曲
-                if(json_decode($data)->url !== '') {
+                if(isset($data) && !empty(json_decode($data)->url)) {
                     file_put_contents($cache, $data);
                 }
             }
@@ -106,7 +104,7 @@ switch($types)   // 根据请求的 Api，执行相应操作
                 $data = $API->lyric($id);
                 
                 // 只缓存链接获取成功的歌曲
-                if(json_decode($data)->lyric !== '') {
+                if(isset($data) && !empty(json_decode($data)->lyric)) {
                     file_put_contents($cache, $data);
                 }
             }
@@ -131,7 +129,7 @@ switch($types)   // 根据请求的 Api，执行相应操作
                 $data = $DOWNLOAD->download($url, $name, $artist);
                 
                 // 只缓存链接获取成功的歌曲
-                if(isset($data) && json_decode($data)->code == 1) {
+                if(isset($data) && !empty(json_decode($data)->url)) {
                     file_put_contents($cache, $data);
                 }
             }
@@ -179,7 +177,7 @@ switch($types)   // 根据请求的 Api，执行相应操作
                 $data = $API->format(false)->playlist($id);
                 
                 // 只缓存链接获取成功的歌曲
-                if(isset(json_decode($data)->playlist->tracks)) {
+                if(isset($data) && !empty(json_decode($data)->playlist->tracks)) {
                     file_put_contents($cache, $data);
                 }
             }
@@ -238,7 +236,7 @@ switch($types)   // 根据请求的 Api，执行相应操作
                 ]);
 
                 // 只缓存链接获取成功的歌曲
-                if(isset($data) && !empty(json_decode($data))) {
+                if(isset($data) && (!empty(json_decode($data)->hot_comment) || !empty(json_decode($data)->comment))) {
                     file_put_contents($cache, $data);
                 }
             }
