@@ -717,12 +717,15 @@ class Meting
             break;
             case 'xiami':
             $api = array(
-                'method'    => 'GET',
-                'url'       => 'http://www.baidu.com',
+                'method'    => 'POST',
+                'url'       => 'https://m.xiami.com/graphql',
                 'body'      => array(
-                    'test'  => 'test',
+                    'query' => '{hotCommentList(objectId:'.$id.', objectType:"song",page:'.(isset($option['page']) ? $option['page'] : 0).',pageSize:'.(isset($option['limit']) ? $option['limit'] : 30).')[song_query_comment_1]newCommentList(objectId:'.$id.', objectType:"song",page:'.(isset($option['page']) ? $option['page'] : 0).',pageSize:'.(isset($option['limit']) ? $option['limit'] : 30).')[song_query_comment_1]}'
                 ),
-                'format'    => 'list',
+                'format'    => array(
+                    'data.hotCommentList.commentVOs',
+                    'data.newCommentList.commentVOs',
+                ),
             );
             break;
             case 'baidu':
@@ -1299,6 +1302,23 @@ class Meting
             'time'       => date('Y-m-d H:i:s', $data['time']),
             'content'    => $data['rootcommentcontent'],
             'source'     => 'tencent',
+        );
+
+        return $result;
+    }
+
+    private function comments_xiami($data)
+    {
+        $result = array(
+            'id'         => $data['commentId'],
+            'user'       => array(
+                'id'     => null,
+                'name'   => $data['memberVO']['nickName'],
+                'avatar' => $data['memberVO']['avatar'],
+            ),
+            'time'       => date('Y-m-d H:i:s', substr($data['gmtCreate'], 0, -3)),
+            'content'    => $data['message'],
+            'source'     => 'xiami',
         );
 
         return $result;

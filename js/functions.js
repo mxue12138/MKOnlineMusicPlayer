@@ -437,6 +437,10 @@ function comments(obj) {
             $(".banner_text span").text(rem.comments[0].content);
             if (obj.source === 'netease') {
                 $(".banner_text a").attr("href", "https://music.163.com/#/song?id="+obj.id+"#comment-box");
+            } else if (obj.source === 'tencent') {
+
+            } else if (obj.source === 'xiami') {
+                $(".banner_text a").attr("href", "https://www.xiami.com/song/"+obj.id+"#comments");
             } else if (obj.source === 'kugou') {
                 $(".banner_text a").attr("href", "https://www.kugou.com/song/#hash="+obj.id);
             } else if (obj.source === 'tencent') {
