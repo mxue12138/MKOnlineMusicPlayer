@@ -468,7 +468,7 @@ function comments(obj) {
 function thisDownloadPic (obj) {
     var music = musicList[$(obj).data("list")].item[$(obj).data("index")];
     if (music.pic) {
-        open(music.pic.split('?')[0]);
+        open(music.pic.split('?')[0].split('@')[0]);
     } else {
         $.ajax({ 
             type: mkPlayer.method, 
@@ -480,7 +480,7 @@ function thisDownloadPic (obj) {
                     console.log("歌曲封面：" + jsonData.url);
                 }
                 if (jsonData.url) {
-                    open(jsonData.url.split('?')[0]);
+                    open(jsonData.url.split('?')[0].split('@')[0]);
                 } else {
                     layer.msg('没有封面');
                 }
