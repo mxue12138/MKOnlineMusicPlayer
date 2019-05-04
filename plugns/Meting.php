@@ -730,12 +730,21 @@ class Meting
             break;
             case 'baidu':
             $api = array(
-                'method'    => 'GET',
-                'url'       => 'http://www.baidu.com',
-                'body'      => array(
-                    'test'  => 'test',
+                'method' => 'GET',
+                'url'    => 'http://music.taihe.com/data/tingapi/v1/restserver/ting',
+                'body'   => array(
+                    'from'      => 'web',
+                    'method'    => 'baidu.ting.ugcmsg.getCommentListByType',
+                    'type_id'   => $id,
+                    'type'      => 2,
+                    'offset'    => isset($option['page']) && isset($option['limit']) ? ($option['page'] - 1) * $option['limit'] : 0,
+                    'size'      => isset($option['limit']) ? $option['limit'] : 30
                 ),
-                'format'    => 'list',
+                'encode'    => 'baidu_AESCBC',
+                'format'    => array(
+                    'result.commentlist_hot',
+                    'result.commentlist_last',
+                ),
             );
             break;
             case 'kugou':
@@ -1319,6 +1328,23 @@ class Meting
             'time'       => date('Y-m-d H:i:s', substr($data['gmtCreate'], 0, -3)),
             'content'    => $data['message'],
             'source'     => 'xiami',
+        );
+
+        return $result;
+    }
+
+    private function comments_baidu($data)
+    {
+        $result = array(
+            'id'         => $data['com_id'],
+            'user'       => array(
+                'id'     => $data['author']['userid'],
+                'name'   => $data['author']['username'],
+                'avatar' => $data['author']['userpic_small'],
+            ),
+            'time'       => date('Y-m-d H:i:s', $data['ctime']),
+            'content'    => $data['comment'],
+            'source'     => 'baidu',
         );
 
         return $result;
