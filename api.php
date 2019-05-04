@@ -72,22 +72,7 @@ switch($types)   // 根据请求的 Api，执行相应操作
     case 'pic':   // 获取封面链接
         $id = getParam('id');  // 歌曲ID
         
-        if(defined('CACHE_PATH')) {
-            $cache = CACHE_PATH.$source.'_'.$types.'_'.$id.'.json';
-            
-            if(file_exists($cache)) {   // 缓存存在，则读取缓存
-                $data = file_get_contents($cache);
-            } else {
-                $data = $API->pic($id);
-                
-                // 只缓存链接获取成功的歌曲
-                if(isset($data) && !empty(json_decode($data)->url)) {
-                    file_put_contents($cache, $data);
-                }
-            }
-        } else {
-            $data = $API->pic($id);
-        }
+        $data = $API->pic($id);
         
         echojson($data);
         break;
@@ -104,7 +89,7 @@ switch($types)   // 根据请求的 Api，执行相应操作
                 $data = $API->lyric($id);
                 
                 // 只缓存链接获取成功的歌曲
-                if(isset($data) && !empty(json_decode($data)->lyric)) {
+                if(isset($data) && isset(json_decode($data)->lyric)) {
                     file_put_contents($cache, $data);
                 }
             }
@@ -112,31 +97,6 @@ switch($types)   // 根据请求的 Api，执行相应操作
             $data = $API->lyric($id);
         }
         
-        echojson($data);
-        break;
-        
-    case 'download':    // 下载歌曲
-        $url = getParam('url');
-        $name = getParam('name');
-        $artist = getParam('artist');
-
-        if(defined('CACHE_PATH')) {
-            $cache = CACHE_PATH.$source.'_'.$types.'_'.md5($name).'_'.$artist.'.json';
-            
-            if(file_exists($cache)) {   // 缓存存在，则读取缓存
-                $data = file_get_contents($cache);
-            } else {
-                $data = $DOWNLOAD->download($url, $name, $artist);
-                
-                // 只缓存链接获取成功的歌曲
-                if(isset($data) && !empty(json_decode($data)->url)) {
-                    file_put_contents($cache, $data);
-                }
-            }
-        } else {
-            $data = $DOWNLOAD->download($url, $name, $artist);
-        }
-
         echojson($data);
         break;
     
@@ -153,7 +113,7 @@ switch($types)   // 根据请求的 Api，执行相应操作
                 $data = file_get_contents($url);
 
                 // 只缓存链接获取成功的用户列表
-                if(isset($data) && !empty(json_decode($data)->playlist)) {
+                if(isset($data) && isset(json_decode($data)->playlist)) {
                     file_put_contents($cache, $data);
                 }
             }
@@ -177,7 +137,7 @@ switch($types)   // 根据请求的 Api，执行相应操作
                 $data = $API->format(false)->playlist($id);
                 
                 // 只缓存链接获取成功的歌曲
-                if(isset($data) && !empty(json_decode($data)->playlist->tracks)) {
+                if(isset($data) && isset(json_decode($data)->playlist->tracks)) {
                     file_put_contents($cache, $data);
                 }
             }
@@ -205,7 +165,7 @@ switch($types)   // 根据请求的 Api，执行相应操作
                 ]);
 
                 // 只缓存链接获取成功的歌曲
-                if(isset($data) && !empty(json_decode($data))) {
+                if(isset($data) && json_decode($data)) {
                     file_put_contents($cache, $data);
                 }
             }
@@ -236,7 +196,7 @@ switch($types)   // 根据请求的 Api，执行相应操作
                 ]);
 
                 // 只缓存链接获取成功的歌曲
-                if(isset($data) && (!empty(json_decode($data)->hot_comment) || !empty(json_decode($data)->comment))) {
+                if(isset($data) && (isset(json_decode($data)->hot_comment) || isset(json_decode($data)->comment))) {
                     file_put_contents($cache, $data);
                 }
             }
@@ -249,7 +209,17 @@ switch($types)   // 根据请求的 Api，执行相应操作
 
         echojson($data);
         break;
+    
+    case 'download':    // 下载歌曲
+        $url = getParam('url');
+        $name = getParam('name');
+        $artist = getParam('artist');
 
+        $data = $DOWNLOAD->download($url, $name, $artist);
+
+        echojson($data);
+        break;
+    
     case 'cache':
         $minute = getParam('minute', 30);   // 删除几分钟之前的文件
 

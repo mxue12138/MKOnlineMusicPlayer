@@ -19,7 +19,7 @@ var mkPlayer = {
     mdotshine: false,   // 是否开启[移动端]播放进度条的小点闪动效果[不支持IE](true/false)
     placard: true,   // 是否开启显示公告弹窗，公告内容在index.html最底部配置
     volume: 0.75,        // 默认音量值(0~1之间)
-    version: "v2.42",    // 播放器当前版本号(仅供调试)
+    version: "v2.44",    // 播放器当前版本号(仅供调试)
     debug: false   // 是否开启调试模式(true/false)
 };
 

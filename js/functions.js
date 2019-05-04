@@ -437,17 +437,18 @@ function comments(obj) {
             $(".banner_text span").text(rem.comments[0].content);
             if (obj.source === 'netease') {
                 $(".banner_text a").attr("href", "https://music.163.com/#/song?id="+obj.id+"#comment-box");
-            } else if (obj.source === 'tencent') {
-
-            } else if (obj.source === 'xiami') {
-                $(".banner_text a").attr("href", "https://www.xiami.com/song/"+obj.id+"#comments");
             } else if (obj.source === 'kugou') {
                 $(".banner_text a").attr("href", "https://www.kugou.com/song/#hash="+obj.id);
             } else if (obj.source === 'tencent') {
                 $(".banner_text a").attr("href", "https://y.qq.com/n/yqq/song/"+obj.id+".html#comment_box");
+            } else if (obj.source === 'xiami') {
+                $(".banner_text a").attr("href", "https://www.xiami.com/song/"+obj.id+"#comments");
+            } else if (obj.source === 'baidu') {
+            
             }
             $(".banner_text img").show().attr("src", rem.comments[0].user.avatar ? rem.comments[0].user.avatar : "images/avatar.png");
             rem.commentsTime = setInterval(function () {
+                $(".banner_text img").attr("src", "");
                 if (commentsIndex === rem.comments.length-1) {
                     commentsIndex = 0;
                 } else {
@@ -566,14 +567,12 @@ function download(music) {
             layer.closeAll();
             clearInterval(loading);
             if (jsonData.code == 1) {
-                if ($('.download').length == 0) {
-                    var downDom = $('<iframe class="download" style="height: 0;width: 0;display: none;"></iframe>');
-                    downDom[0].src = jsonData.url;
-                    $('body').append(downDom);
-                } else {
-                    var downDom = $('.download');
-                    downDom[0].src = jsonData.url;
+                if ($('.download').length) {
+                    $('.download').remove();
                 }
+                var downDom = $('<iframe class="download" style="height: 0;width: 0;display: none;"></iframe>');
+                downDom[0].src = jsonData.url;
+                $('body').append(downDom);
             } else {
                 layer.msg(jsonData.msg);
             }
@@ -779,27 +778,27 @@ function addListbar(types) {
 // 将时间格式化为 00:00 的格式
 // 参数：原始时间
 function formatTime(time){    
-	var hour,minute,second;
-	hour = String(parseInt(time/3600,10));
-	if(hour.length == 1) hour='0' + hour;
-	
-	minute=String(parseInt((time%3600)/60,10));
-	if(minute.length == 1) minute='0'+minute;
-	
-	second=String(parseInt(time%60,10));
-	if(second.length == 1) second='0'+second;
-	
-	if(hour > 0) {
-	    return hour + ":" + minute + ":" + second;
-	} else {
-	    return minute + ":" + second;
-	}
+    var hour,minute,second;
+    hour = String(parseInt(time/3600,10));
+    if(hour.length == 1) hour='0' + hour;
+    
+    minute=String(parseInt((time%3600)/60,10));
+    if(minute.length == 1) minute='0'+minute;
+    
+    second=String(parseInt(time%60,10));
+    if(second.length == 1) second='0'+second;
+    
+    if(hour > 0) {
+        return hour + ":" + minute + ":" + second;
+    } else {
+        return minute + ":" + second;
+    }
 }
 
 // url编码
 // 输入参数：待编码的字符串
 function urlEncode(String) {
-    return encodeURIComponent(String).replace(/'/g,"%27").replace(/"/g,"%22");	
+    return encodeURIComponent(String).replace(/'/g,"%27").replace(/"/g,"%22");  
 }
 
 // 在 ajax 获取了音乐的信息后再进行更新
@@ -1045,7 +1044,7 @@ function playerSavedata(key, data) {
     data = JSON.stringify(data);
     // 存储，IE6~7 不支持HTML5本地存储
     if (window.localStorage) {
-        localStorage.setItem(key, data);	
+        localStorage.setItem(key, data);    
     }
 }
 
