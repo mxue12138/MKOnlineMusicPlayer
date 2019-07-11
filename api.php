@@ -22,10 +22,10 @@ $netease_cookie = '';
 **/
 
 
-define('HTTPS', false);    // 如果您的网站启用了https，请将此项置为“true”，如果你的网站未启用 https，建议将此项设置为“false”
+define('HTTPS', true);    // 如果您的网站启用了https，请将此项置为“true”，如果你的网站未启用 https，建议将此项设置为“false”
 define('DEBUG', false);      // 是否开启调试模式，正常使用时请将此项置为“false”
 define('JSONP', true);      // 是否开启JSONP模式，使用远程api时请开启
-define('CACHE_PATH', 'cache/');     // 文件缓存目录,请确保该目录存在且有读写权限。如无需缓存，可将此行注释掉
+// define('CACHE_PATH', 'cache/');     // 文件缓存目录,请确保该目录存在且有读写权限。如无需缓存，可将此行注释掉
 
 /*
  如果遇到程序不能正常运行，请开启调试模式，然后访问 http://你的网站/音乐播放器地址/api.php ，进入服务器运行环境检测。
