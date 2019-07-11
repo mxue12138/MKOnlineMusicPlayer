@@ -525,6 +525,7 @@ function thisDownloadLrc (obj) {
             } else {
                 layer.msg('歌词获取失败');
             }
+            layer.closeAll();
         },   //success
         error: function(XMLHttpRequest, textStatus, errorThrown) {
             layer.msg('歌词读取失败 - ' + XMLHttpRequest.status);
