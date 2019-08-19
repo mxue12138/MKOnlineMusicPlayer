@@ -24,7 +24,7 @@ $netease_cookie = '';
 
 define('HTTPS', true);    // 如果您的网站启用了https，请将此项置为“true”，如果你的网站未启用 https，建议将此项设置为“false”
 define('DEBUG', false);      // 是否开启调试模式，正常使用时请将此项置为“false”
-define('JSONP', true);      // 是否开启JSONP模式，使用远程api时请开启
+define('JSONP', false);      // 是否开启JSONP模式，使用远程api时请开启
 // define('CACHE_PATH', 'cache/');     // 文件缓存目录,请确保该目录存在且有读写权限。如无需缓存，可将此行注释掉
 
 /*
@@ -35,7 +35,7 @@ define('JSONP', true);      // 是否开启JSONP模式，使用远程api时请�
 */
 
 /*****************************************************************************************************/
-// if(!defined('DEBUG') || DEBUG !== true) error_reporting(0); // 屏蔽服务器错误
+if(!defined('DEBUG') || DEBUG !== true) error_reporting(0); // 屏蔽服务器错误
 
 require_once('plugns/Meting.php');
 require_once('plugns/Download.php');
@@ -49,8 +49,8 @@ $DOWNLOAD = new Download($source);
 
 $API->format(true); // 启用格式化功能
 
-if($source == 'kugou' || $source == 'baidu') {
-    define('NO_HTTPS', true);        // 酷狗和百度音乐源暂不支持 https
+if($source == 'kugou' || $source == 'baidu' || $source == 'tencent') {
+    define('NO_HTTPS', true);        // 酷狗、百度音乐和QQ源暂不支持 https
 } elseif(($source == 'netease') && $netease_cookie) {
     $API->cookie($netease_cookie);    // 解决网易云 Cookie 失效
 }

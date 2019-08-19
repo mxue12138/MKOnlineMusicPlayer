@@ -468,6 +468,7 @@ function comments(obj) {
 // 下载封面
 function thisDownloadPic (obj) {
     var music = musicList[$(obj).data("list")].item[$(obj).data("index")];
+    layer.closeAll();
     if (music.pic) {
         open(music.pic.split('?')[0].split('@')[0]);
     } else {
@@ -497,6 +498,7 @@ function thisDownloadPic (obj) {
 // 下载歌词
 function thisDownloadLrc (obj) {
     var music = musicList[$(obj).data("list")].item[$(obj).data("index")];
+    layer.closeAll();
     $.ajax({
         type: mkPlayer.method,
         url: mkPlayer.api,
@@ -508,7 +510,7 @@ function thisDownloadLrc (obj) {
                 console.debug("歌词获取成功");
             }
             
-            var lyric = obj;
+            var lyric = jsonData.lyric;
             if (mkPlayer.debug) {
                 console.debug("歌词获取成功");
             }
@@ -525,7 +527,6 @@ function thisDownloadLrc (obj) {
             } else {
                 layer.msg('歌词获取失败');
             }
-            layer.closeAll();
         },   //success
         error: function(XMLHttpRequest, textStatus, errorThrown) {
             layer.msg('歌词读取失败 - ' + XMLHttpRequest.status);

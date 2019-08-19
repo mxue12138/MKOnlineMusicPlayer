@@ -16,6 +16,8 @@ MxuePlay是MKOnlineMusicPlayer的优化版，MKOnlineMusicPlayer 是一款开源
 
 ![播放列表界面(电脑端)](https://user-images.githubusercontent.com/35069089/52914976-65f83b80-3309-11e9-97fc-b3409ccb2d09.png)
 
+![下载歌曲/歌词(电脑端)](https://user-images.githubusercontent.com/35069089/63268311-785a2e80-c2c6-11e9-858a-a5629d80731a.png)
+
 
 ### 相关链接
 -----
@@ -58,7 +60,7 @@ php 5.4+, curl_exec, file_get_contents, json_decode, openssl_encrypt
    }
    ```
 
-3. 如果是使用的分布式歌曲下载服务器，请将上面的代码添加到下载服务器，并且还需要在下载服务器的网站配置添加以下代码以解决跨域问题
+3. 如果网站和接口不在一台服务器上，请将上面的代码添加到接口所在的服务器，并且还需要在接口所在的服务器的网站配置添加以下代码以解决跨域问题
 
    apache：
 
