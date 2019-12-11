@@ -418,6 +418,7 @@ function comments(obj) {
     clearInterval(rem.commentsTime);
     $(".banner_text span").text("歌曲热评/评论");
     $(".banner_text a").attr("href", "javascript:;");
+    $(".banner_text a").removeAttr("target");
     $(".banner_text img").hide();
     $.ajax({
         type: mkPlayer.method, 
@@ -446,6 +447,7 @@ function comments(obj) {
             } else if (obj.source === 'baidu') {
             
             }
+            $(".banner_text a").attr("target", "_blank");
             $(".banner_text img").show().attr("src", rem.comments[0].user.avatar ? rem.comments[0].user.avatar : "images/avatar.png");
             rem.commentsTime = setInterval(function () {
                 $(".banner_text img").attr("src", "");
