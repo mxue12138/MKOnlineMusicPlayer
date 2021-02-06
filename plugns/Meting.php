@@ -13,7 +13,7 @@ namespace Metowolf;
 
 class Meting
 {
-    const VERSION = '1.5.7';
+    const VERSION = '1.5.8';
 
     public $raw;
     public $data;
@@ -511,7 +511,7 @@ class Meting
             case 'netease':
             $api = array(
                 'method' => 'POST',
-                'url'    => 'http://music.163.com/api/v3/playlist/detail',
+                'url'    => 'http://music.163.com/api/v6/playlist/detail',
                 'body'   => array(
                     's'  => '0',
                     'id' => $id,
