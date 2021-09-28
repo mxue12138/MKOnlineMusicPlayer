@@ -42,7 +42,7 @@ php 5.4+, curl_exec, file_get_contents, json_decode, openssl_encrypt
 
    如果以上都不行的话，可以直接关闭 api.php 内的缓存(关闭缓存可能会导致偶尔无法获取音乐)。
 
-2. 添加以下代码到你的网站配置文件，推荐添加到php引用之前，否则可能导致恶意php被执行
+2. 添加以下代码到你的网站配置文件，推荐添加到php引用之前，否则可能导致恶意php被执行(不添加会导致网站异常、歌曲无法下载等)
 
    apache：
 
