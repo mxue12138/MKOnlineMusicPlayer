@@ -25,7 +25,7 @@ MxuePlay是MKOnlineMusicPlayer的优化版，MKOnlineMusicPlayer 是一款开源
 
 **详细介绍** [http://mkblog.cn/1060/](http://mkblog.cn/1060/)
 
-**GitHub** [https://github.com/mxue12138/MKOnlineMusicPlayer](https://github.com/mxue12138/MKOnlineMusicPlayer)、[https://gogs.itmxue.cn/mingxue/MKOnlineMusicPlayer](https://gogs.itmxue.cn/mingxue/MKOnlineMusicPlayer)(本人升级优化版)
+**GitHub** [https://github.com/mxue12138/MKOnlineMusicPlayer](https://github.com/mxue12138/MKOnlineMusicPlayer)(本人升级优化版)
 
 ### 注意事项
 -----
@@ -40,12 +40,14 @@ php 5.4+, curl_exec, file_get_contents, json_decode, openssl_encrypt
 
    如果是虚拟主机没办法添加Shell脚本的话，可以使用网站监控，监控“你的域名/api.php?types=cache”，监控时间推荐一分钟。
 
+   如果以上都不行的话，可以直接关闭 api.php 内的缓存(关闭缓存可能会导致偶尔无法获取音乐)。
+
 2. 添加以下代码到你的网站配置文件，推荐添加到php引用之前，否则可能导致恶意php被执行
 
    apache：
 
    ```
-   <Directory "你的网站绝对路径/cache/">
+   <Directory "你的网站绝对路径/temp/">
        Header set Content-Type "application/octet-stream"
        Header set Content-Disposition "attachment;"
    </Directory>
@@ -82,7 +84,7 @@ php 5.4+, curl_exec, file_get_contents, json_decode, openssl_encrypt
 本播放器设计支持 IE9及以上的现代浏览器。并且已在 Chrome、firefox、IE11 等浏览器测试使用正常。
 
 #### 版权
-本播放器由 [mengkun(https://mkblog.cn)](https://mkblog.cn) 开发，2.42版本及以后由本人修改优化，您可以随意修改、使用、转载。
+本播放器由 [mengkun(https://mkblog.cn)](https://mkblog.cn) 开发，**2.42版本及以后由本人修改优化**，您可以随意修改、使用、转载。
 
 #### 歌曲
 播放器中的歌曲来自各大音乐平台，歌曲版权归各大平台享有。请支持正版音乐。
