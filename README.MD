@@ -248,6 +248,8 @@ php 5.4+, curl_exec, file_get_contents, json_decode, openssl_encrypt
 | rem.sheetList | 歌单容器操作对象 |
 | rem.mainList | 歌曲列表容器操作对象 |
 | rem.isMobile | 是否是手机浏览 |
+| rem.commentsTime | 当前歌曲热评的定时器 |
+| rem.comments | 当前歌曲的热评 |
 
 ### 致谢
 -----
