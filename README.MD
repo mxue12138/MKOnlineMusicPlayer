@@ -21,9 +21,13 @@ MxuePlay是MKOnlineMusicPlayer的优化版，MKOnlineMusicPlayer 是一款开源
 
 ### 相关链接
 -----
+**在线演示** [http://lab.mkblog.cn/music/](http://lab.mkblog.cn/music/)(原版)
+
 **在线演示** [https://music.itmxue.cn](https://music.itmxue.cn)(本人升级优化版)
 
 **详细介绍** [http://mkblog.cn/1060/](http://mkblog.cn/1060/)
+
+**GitHub** [https://github.com/mengkunsoft/MKOnlineMusicPlayer](https://github.com/mengkunsoft/MKOnlineMusicPlayer)(原版)
 
 **GitHub** [https://github.com/mxue12138/MKOnlineMusicPlayer](https://github.com/mxue12138/MKOnlineMusicPlayer)(本人升级优化版)
 
@@ -34,7 +38,7 @@ php 5.4+, curl_exec, file_get_contents, json_decode, openssl_encrypt
 
 #### 必要配置
 
-1. 请务必添加以下代码到cron定时任务，并设置成每分钟执行一次，否则会导致用户歌单、歌曲列表、歌词等更新不及时，宝塔用户可以直接设置“计划任务”并选择“Shell脚本”
+1. **[清除缓存]** 请务必添加以下代码到cron定时任务，并设置成每分钟执行一次，否则会导致用户歌单、歌曲列表、歌词等更新不及时，宝塔用户可以直接设置“计划任务”并选择“Shell脚本”
 
    ``find 你的网站绝对路径/cache/*.json -type f -cmin +30 -exec rm -fv {} \;``
 
@@ -42,7 +46,7 @@ php 5.4+, curl_exec, file_get_contents, json_decode, openssl_encrypt
 
    如果以上都不行的话，可以直接关闭 api.php 内的缓存(关闭缓存可能会导致偶尔无法获取音乐)。
 
-2. 添加以下代码到你的网站配置文件，推荐添加到php引用之前，否则可能导致恶意php被执行(不添加会导致网站异常、歌曲无法下载等)
+2. **[下载歌曲]** 添加以下代码到你的网站配置文件，推荐添加到php引用之前，否则可能导致恶意php被执行(不添加会导致网站异常、歌曲无法下载等)
 
    apache：
 
@@ -62,7 +66,7 @@ php 5.4+, curl_exec, file_get_contents, json_decode, openssl_encrypt
    }
    ```
 
-3. 如果网站和接口不在一台服务器上，请将上面的代码添加到接口所在的服务器，并且还需要在接口所在的服务器的网站配置添加以下代码以解决跨域问题
+3. **[跨域设置]** 如果网站和接口不在一台服务器上，请将上面的代码添加到接口所在的服务器，并且还需要在接口所在的服务器的网站配置添加以下代码以解决跨域问题
 
    apache：
 
