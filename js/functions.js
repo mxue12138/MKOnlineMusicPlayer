@@ -419,7 +419,7 @@ function thisDownload(obj) {
 
 // 获取并设置评论
 function comments(obj) {
-    clearInterval(rem.commentsTime);
+    clearTimeout(rem.commentsTime);
     $(".banner_text span").text("歌曲热评/评论");
     $(".banner_text a").attr("href", "javascript:;");
     $(".banner_text a").removeAttr("target");
@@ -438,7 +438,6 @@ function comments(obj) {
                 rem.comments = [];
                 return;
             }
-            var commentsIndex = 0;
             $(".banner_text span").text(rem.comments[0].content);
             if (obj.source === 'netease') {
                 $(".banner_text a").attr("href", "https://music.163.com/#/song?id="+obj.id+"#comment-box");
@@ -453,16 +452,20 @@ function comments(obj) {
             }
             $(".banner_text a").attr("target", "_blank");
             $(".banner_text img").show().attr("src", rem.comments[0].user.avatar ? rem.comments[0].user.avatar : "images/avatar.png");
-            rem.commentsTime = setInterval(function () {
+            (function nextComment (commentsIndex) {
                 $(".banner_text img").attr("src", "");
-                if (commentsIndex === rem.comments.length-1) {
+                if (!commentsIndex || commentsIndex === rem.comments.length-1) {
                     commentsIndex = 0;
                 } else {
                     commentsIndex++;
                 }
                 $(".banner_text span").text(rem.comments[commentsIndex].content);
                 $(".banner_text img").show().attr("src", rem.comments[commentsIndex].user.avatar ? rem.comments[commentsIndex].user.avatar : "images/avatar.png");
-            }, 5000)
+
+                rem.commentsTime = setTimeout(function () {
+                    nextComment(commentsIndex)
+                }, 5000)
+            })()
         },   //success
         error: function(XMLHttpRequest, textStatus, errorThrown) {
             layer.msg('歌曲评论获取失败 - ' + XMLHttpRequest.status);
