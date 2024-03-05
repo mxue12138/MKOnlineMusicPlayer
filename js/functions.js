@@ -454,7 +454,7 @@ function comments(obj) {
             $(".banner_text img").show().attr("src", rem.comments[0].user.avatar ? rem.comments[0].user.avatar : "images/avatar.png");
             (function nextComment (commentsIndex) {
                 $(".banner_text img").attr("src", "");
-                if (!commentsIndex || commentsIndex === rem.comments.length-1) {
+                if (commentsIndex === undefined || commentsIndex === rem.comments.length-1) {
                     commentsIndex = 0;
                 } else {
                     commentsIndex++;
