@@ -181,7 +181,7 @@ switch($types)   // 根据请求的 Api，执行相应操作
     
     case 'comments':  // 获取评论
         $id = getParam('id');  // 歌曲id
-        $limit = getParam('count', 20);  // 每页显示数量
+        $limit = getParam('count', 50);  // 每页显示数量
         $pages = getParam('pages', 1);  // 页码
         
         if(defined('CACHE_PATH')) {
