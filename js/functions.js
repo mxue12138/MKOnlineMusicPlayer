@@ -438,7 +438,6 @@ function comments(obj) {
                 rem.comments = [];
                 return;
             }
-            $(".banner_text span").text(rem.comments[0].content);
             if (obj.source === 'netease') {
                 $(".banner_text a").attr("href", "https://music.163.com/#/song?id="+obj.id+"#comment-box");
             } else if (obj.source === 'kugou') {
@@ -451,20 +450,24 @@ function comments(obj) {
             
             }
             $(".banner_text a").attr("target", "_blank");
-            $(".banner_text img").show().attr("src", rem.comments[0].user.avatar ? rem.comments[0].user.avatar : "images/avatar.png");
+            var avatarDom = new Image();
             (function nextComment (commentsIndex) {
-                $(".banner_text img").attr("src", "");
                 if (commentsIndex === undefined || commentsIndex === rem.comments.length-1) {
                     commentsIndex = 0;
                 } else {
                     commentsIndex++;
                 }
-                $(".banner_text span").text(rem.comments[commentsIndex].content);
-                $(".banner_text img").show().attr("src", rem.comments[commentsIndex].user.avatar ? rem.comments[commentsIndex].user.avatar : "images/avatar.png");
 
-                rem.commentsTime = setTimeout(function () {
-                    nextComment(commentsIndex)
-                }, 5000)
+                var avatarSrc = (rem.comments[commentsIndex].user.avatar ? rem.comments[commentsIndex].user.avatar : "images/avatar.png") + '?t=' + Math.random();
+                avatarDom.src = avatarSrc;
+                avatarDom.onload = function () {
+                    $(".banner_text span").text(rem.comments[commentsIndex].content);
+                    $(".banner_text img").show().attr("src", avatarSrc);
+    
+                    rem.commentsTime = setTimeout(function () {
+                        nextComment(commentsIndex)
+                    }, 5000)
+                }
             })()
         },   //success
         error: function(XMLHttpRequest, textStatus, errorThrown) {
