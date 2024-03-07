@@ -33,7 +33,14 @@ MxuePlay是MKOnlineMusicPlayer的优化版，MKOnlineMusicPlayer 是一款开源
 
 ### 注意事项
 -----
+#### Docker
+1. 使用 docker-compose 运行，请自行安装。首先下载代码，进入代码根目录后启动，启动命令为 ``docker-compose up -d``
+
+2. 默认端口是 4000，需要修改的话请修改 docker-compose.yml 文件，修改后需要删除容器重新创建，``docker-compose down && docker-compose up -d``
+3. docker-compose.yml 部分代码参考自 [#issuecomment-1976040416](https://github.com/mxue12138/MKOnlineMusicPlayer/issues/2#issuecomment-1976040416)
+
 #### 运行环境
+
 php 5.4+, curl_exec, file_get_contents, json_decode, openssl_encrypt
 
 #### 必要配置

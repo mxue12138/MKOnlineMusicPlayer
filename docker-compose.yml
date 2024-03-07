@@ -1,0 +1,13 @@
+version: '3'
+
+services:
+  webapp:
+    container_name: MKOnlineMusicPlayer
+    image: php:7.4-apache
+    ports:
+      - "4000:80"
+    volumes:
+      - ./:/var/www/html/
+      - ./apache.conf:/etc/apache2/sites-available/000-default.conf.bak
+    command: /bin/bash -c "((a2query -m | grep -q 'headers') || a2enmod headers) && service apache2 stop && cp -v /etc/apache2/sites-available/000-default.conf.bak /etc/apache2/sites-available/000-default.conf && source /etc/apache2/envvars && /usr/sbin/apache2 -D FOREGROUND"
+
