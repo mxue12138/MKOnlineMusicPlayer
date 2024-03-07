@@ -9,7 +9,7 @@
     <meta name="generator" content="KodCloud">
     <meta name="referrer" content="no-referrer">
     <meta http-equiv="Cache-Control" content="no-siteapp">
-    
+
     <!-- 强制移动设备以app模式打开页面(即在移动设备下全屏，仅支持部分浏览器) -->
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-touch-fullscreen" content="yes">
@@ -18,34 +18,34 @@
     <meta name="browsermode" content="application"><!--UC应用模式-->
     <meta name="x5-fullscreen" content="true"><!--QQ强制全屏-->
     <meta name="x5-page-mode" content="app"><!--QQ应用模式-->
-    
+
     <title>MxuePlayer-茗血在线听歌房|收费歌曲在线下载|MKOnlinePlayer</title>
     <meta name="description" content="MxuePlay是一个以H5 + JavaScript + php为基础开发的在线听歌房，原作者孟坤（MK），除了可以在线听歌，还可以免费下载各大音乐网站的收费歌曲，欢迎各位音乐爱好者前来体验。"/>
     <meta name="keywords" content="MKOnlinePlayer,MxuePlay,在线听歌房,热门歌曲下载,茗血听歌房,网易云音乐免费下载,QQ音乐免费下载,酷狗音乐免费下载"/>
-    
+
     <!-- 不支持IE8及以下版本浏览器 -->
     <!--[if lte IE 8]>
         <script>window.location.href="plugns/killie/"</script>
-    <![endif]--> 
-    
+    <![endif]-->
+
     <!-- favicon图标 -->
     <link rel="shortcut icon" href="favicon.ico">
-    
+
     <!-- jQuery文件 -->
     <script src="js/jquery.min.js"></script>
-    
+
     <!-- layui样式文件 -->
     <link rel="stylesheet" href="plugns/layui/css/layui.css">
-    
+
     <!-- 滚动条美化样式文件 -->
     <link rel="stylesheet" type="text/css" href="css/jquery.mCustomScrollbar.min.css">
 
     <!-- 播放器样式表文件 -->
     <link rel="stylesheet" type="text/css" href="css/player.css">
-    
+
     <!-- 小屏幕样式修复 -->
     <link rel="stylesheet" type="text/css" href="css/small.css">
-    
+
     <!-- 自定义css样式 -->
     <style>
         #layer-placard-content {
@@ -88,15 +88,15 @@
                 <span class="btn" data-action="search" title="点击搜索音乐">歌曲搜索</span>
             </div>
         </div>  <!--class="btn-bar"-->
-        
+
         <div class="data-area">
             <!--歌曲歌单-->
             <div id="sheet" class="data-box" hidden></div>
-            
+
             <!--音乐播放列表-->
             <div id="main-list" class="music-list data-box"></div>
         </div>  <!--class="data-area"-->
-        
+
         <!-- 右侧封面及歌词展示 -->
         <div class="player" id="player">
             <!--歌曲封面-->
@@ -121,20 +121,20 @@
             <a href="javascript:;" class="player-btn btn-next" title="下一首"></a>
 			<a href="javascript:;" class="player-btn btn-order" title="循环控制"></a>
         </div>  <!--class="con-btn"-->
-        
+
         <div class="vol">
             <div class="quiet">
                 <a href="javascript:;" class="player-btn btn-quiet" title="静音"></a>
             </div>
             <div class="volume">
-                <div class="volume-box">  
+                <div class="volume-box">
                     <div id="volume-progress" class="mkpgb-area"></div>
                 </div>
             </div>
         </div>  <!--class="footer"-->
-        
+
         <div class="progress">
-            <div class="progress-box">  
+            <div class="progress-box">
                 <div id="music-progress" class="mkpgb-area"></div>
                 <div class="audio-time">00:00/00:00</div>
             </div>
@@ -189,15 +189,15 @@
                 <input type="text" name="wd" id="search-wd" required  lay-verify="required" placeholder="搜索歌手、歌名、专辑" autocomplete="on" class="layui-input">
                 <button class="layui-btn" lay-submit type="submit">搜 索</button>
             </div>
-            <div class="source-radio" id="music-source">
+            <!--div class="source-radio" id="music-source">
                 <label><input type="radio" name="source" value="netease" checked title="网易云"></label>
                 <label><input type="radio" name="source" value="kugou" title="酷狗"></label>
                 <label><input type="radio" name="source" value="tencent" title="QQ"></label>
-                <!-- 致敬永远存在的虾米音乐 start -->
+                <div hidden>致敬永远存在的虾米音乐 start</div>
                 <label><input type="radio" name="source" value="xiami" title="虾米" disabled></label>
-                <!-- end -->
+                <div hidden>end</div>
                 <label><input type="radio" name="source" value="baidu" title="百度"></label>
-            </div>
+            </div-->
         </form>
     </div>
 </script>
